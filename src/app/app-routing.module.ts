@@ -10,7 +10,7 @@ const appRoutes: Routes = [
     { path: '', redirectTo: '/stock', pathMatch: 'full' },
     {
         path: 'stock', component: StockListComponent, children: [
-
+            { path: '', component: StockListComponent },
             { path: ':symbol', component: StockItemComponent }
         ]
 
