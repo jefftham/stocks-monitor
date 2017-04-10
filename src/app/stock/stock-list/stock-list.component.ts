@@ -12,19 +12,19 @@ export class StockListComponent implements OnInit {
   purchasedStockList: Stock[];
   pubchaseStocksDetail = [];
   favoriteStockList: Stock[];
-  favoriteStocksDetail = []
+  favoriteStocksDetail = [];
   constructor(private stockservice: StockService) { }
 
   ngOnInit() {
     this.purchasedStockList = this.stockservice.getPurchasedStockList();
     this.favoriteStockList = this.stockservice.getFavoriteStockList();
-    for (let stock of this.purchasedStockList) {
+    for (const stock of this.purchasedStockList) {
       this.stockservice.getLiveStockInfo(stock.symbol).subscribe(
         (data) => {
-          this.pubchaseStocksDetail.push(data)
+          this.pubchaseStocksDetail.push(data);
           console.log(data);
         }
-      )
+      );
     }
   }
 
