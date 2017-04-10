@@ -44,7 +44,7 @@ export class StockService {
                 return Observable.throw('Unable to get live stock data.');
 
             }
-            )
+            );
     }
 
     addPurchasedStock(stock: Stock) {
@@ -58,12 +58,12 @@ export class StockService {
     deletePurchasedStock(symbol: string) {
         this.purchasedStockList = this.purchasedStockList.filter(
             (stock) => { return stock.symbol === symbol; }
-        )
+        );
     }
 
     deleteFavoriteStock(symbol: string) {
         this.favoriteStockList = this.favoriteStockList.filter(
             (stock) => { return stock.symbol === symbol; }
-        )
+        );
     }
 }
