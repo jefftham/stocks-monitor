@@ -5,7 +5,7 @@ import 'rxjs/Rx';
 
 import { Stock } from './stock.model';
 
-const api = 'http://www.alphavantage.co/query?function=';
+const api = 'https://www.alphavantage.co/query?function=';
 const intraday = 'TIME_SERIES_INTRADAY';
 const apiKey = 1537;
 const headers = new Headers({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
