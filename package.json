@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "http-server",
+    "start": "http-server --cors",
     "build": "ng build",
     "test": "ng test",
     "lint": "tslint \"src/**/*.ts\"",

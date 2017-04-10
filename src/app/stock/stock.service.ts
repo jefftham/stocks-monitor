@@ -28,10 +28,9 @@ export class StockService {
         return this.favoriteStockList.slice();
     }
 
-    // CORS error occurred here, use https://crossorigin.me/  for temporary solution
+    // CORS error occurred here, maybe the  stock api is not a modern CORS  API. use JSONP instead.
     getLiveStockInfo(symbol: string) {
-        // const crossOrigin = 'https://crossorigin.me/';
-        // const tempUrl = crossOrigin + api + intraday + '&symbol=' + symbol + '&interval=1min&apikey=' + apiKey;
+
         const url = api + intraday + '&symbol=' + symbol + '&interval=1min&apikey=' + apiKey;
         return this.http.get(url, { headers: headers })
             .map(
