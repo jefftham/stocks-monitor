@@ -10,12 +10,23 @@ import { Stock } from '../stock.model';
 export class StockListComponent implements OnInit {
   subtitle = 'Stock List';
   purchasedStockList: Stock[];
+  pubchaseStocksDetail = [];
   favoriteStockList: Stock[];
+  favoriteStocksDetail = []
   constructor(private stockservice: StockService) { }
 
   ngOnInit() {
-    this.favoriteStockList = this.stockservice.getFavoriteStockList();
     this.purchasedStockList = this.stockservice.getPurchasedStockList();
+    this.favoriteStockList = this.stockservice.getFavoriteStockList();
+    for (let stock of this.purchasedStockList) {
+      this.stockservice.getLiveStockInfo(stock.symbol).subscribe(
+        (data) => {
+          this.pubchaseStocksDetail.push(data)
+          console.log(data);
+        }
+      )
+    }
   }
+
 
 }
