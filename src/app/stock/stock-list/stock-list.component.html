@@ -1,0 +1,6 @@
+<h2>{{subtitle}}</h2>
+<h3>Purchased Stocks</h3>
+<div *ngFor="let stock of purchasedStockList">{{stock.symbol}}</div>
+<h3>Favorite Stocks</h3>
+<div *ngFor="let stock of favoriteStockList">{{stock.symbol}}</div>
+<router-outlet></router-outlet>
