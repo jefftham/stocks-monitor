@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers } from '@angular/http';
+import { Http, Response, Headers, Jsonp } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/Rx';
 
 import { Stock } from './stock.model';
 
-//const api = 'https://www.alphavantage.co/query?function=';
-const api = '/query?function=';
+// const api = 'https://www.alphavantage.co/query?function=';
+const api = '/api/';
 const intraday = 'TIME_SERIES_INTRADAY';
 const apiKey = 1537;
-const headers = new Headers({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+// const headers = new Headers({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
 
 @Injectable()
 export class StockService {
@@ -19,7 +19,7 @@ export class StockService {
     private lastRefreshed;
 
 
-    constructor(private http: Http) { }
+    constructor(private http: Http, private jsonp: Jsonp) { }
 
     getPurchasedStockList() {
         return this.purchasedStockList.slice();
@@ -33,9 +33,12 @@ export class StockService {
     getLiveStockInfo(symbol: string) {
 
         const url = api + intraday + '&symbol=' + symbol + '&interval=1min&apikey=' + apiKey;
-        return this.http.get(url, { headers: headers })
+        // console.log(url);
+        // return this.http.get(url, { headers: headers })
+        return this.http.get(url)
             .map(
             (res: Response) => {
+                console.log(res);
                 return res.json();
             }
             )
