@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "http-server --cors",
+    "start": "http-server -P https://www.alphavantage.co/",
     "build": "ng build",
     "test": "ng test",
     "lint": "tslint \"src/**/*.ts\"",
