@@ -37,7 +37,7 @@ app.get('/api/:query', function (req, res) {
     }
     if (error) {
       console.log('error: ', error);
-      console.log('unable to get data!!!!!!!!')
+      console.log('unable to get data!!!!!!!!');
     }
   });
 

@@ -7,7 +7,10 @@ import { Stock } from './stock.model';
 
 // const api = 'https://www.alphavantage.co/query?function=';
 const api = '/api/';
-const intraday = 'TIME_SERIES_INTRADAY';
+const report = 'TIME_SERIES_DAILY';
+// const report = 'TIME_SERIES_INTRADAY';
+const outputsize = 'compact';
+// const outputsize = 'full';  // or 'compact'
 const apiKey = 1537;
 // const headers = new Headers({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
 
@@ -16,6 +19,7 @@ export class StockService {
 
     private purchasedStockList: Stock[] = [new Stock('AAPL', 140)];
     private favoriteStockList: Stock[] = [new Stock('TSLA', 250)];
+    // private subscribedObservables = [];
     private lastRefreshed;
 
 
@@ -29,16 +33,21 @@ export class StockService {
         return this.favoriteStockList.slice();
     }
 
+    /*    addSubscribedStock(symbol: string){
+            this.subscribedObservables.push(symbol);
+        }*/
+
     // CORS error occurred here, maybe the  stock api is not a modern CORS  API. use JSONP instead.
     getLiveStockInfo(symbol: string) {
 
-        const url = api + intraday + '&symbol=' + symbol + '&interval=1min&apikey=' + apiKey;
+        const url = api + report + '&symbol=' + symbol + '&outputsize=' + outputsize + '&interval=1min&apikey=' + apiKey;
         // console.log(url);
         // return this.http.get(url, { headers: headers })
-        return this.http.get(url)
+        //  return this.http.get(url)
+        return Observable.timer(0, 1000 * 60).flatMap(() => this.http.get(url)
             .map(
             (res: Response) => {
-                console.log(res);
+                // console.log(res);
                 return res.json();
             }
             )
@@ -47,7 +56,8 @@ export class StockService {
                 return Observable.throw('Unable to get live stock data.');
 
             }
-            );
+            )
+        );
     }
 
     addPurchasedStock(stock: Stock) {
