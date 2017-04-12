@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
-import { Http, Response, Headers, Jsonp } from '@angular/http';
+import { Injectable, OnInit } from '@angular/core';
+import { Http, Response, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/Rx';
 
 import { Stock } from './stock.model';
+import { StockDataService } from './stock-data.service';
 
 // const api = 'https://www.alphavantage.co/query?function=';
 const api = '/api/';
@@ -14,30 +15,44 @@ const outputsize = 'compact';
 const apiKey = 1537;
 // const headers = new Headers({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
 
+const stockEnum = {
+    '1. open': 'Open',
+
+    '2. high': 'High',
+
+    '3. low': 'Low',
+
+    '4. close': 'Close',
+
+    '5. volume': 'Volume'
+};
+
 @Injectable()
 export class StockService {
 
-    private purchasedStockList: Stock[] = [new Stock('AAPL', 140)];
-    private favoriteStockList: Stock[] = [new Stock('TSLA', 250)];
+    private purchasedStockList: Stock[] = [];
+    // private purchasedStockList: Stock[] = [];
+    private favoriteStockList: Stock[] = [];
     // private subscribedObservables = [];
     private lastRefreshed;
 
 
-    constructor(private http: Http, private jsonp: Jsonp) { }
+    constructor(private http: Http, private databaseService: StockDataService) { }
+
 
     getPurchasedStockList() {
-        return this.purchasedStockList.slice();
+        return this.databaseService.getPubchasedStockList();
+
+
     }
 
     getFavoriteStockList() {
-        return this.favoriteStockList.slice();
+        return this.databaseService.getFavoriteStockList();
     }
 
-    /*    addSubscribedStock(symbol: string){
-            this.subscribedObservables.push(symbol);
-        }*/
 
-    // CORS error occurred here, maybe the  stock api is not a modern CORS  API. use JSONP instead.
+
+    // CORS error occurred here, maybe the  stock api is not a modern CORS  API. use  proxy or route traffic from own server
     getLiveStockInfo(symbol: string) {
 
         const url = api + report + '&symbol=' + symbol + '&outputsize=' + outputsize + '&interval=1min&apikey=' + apiKey;
@@ -48,7 +63,19 @@ export class StockService {
             .map(
             (res: Response) => {
                 // console.log(res);
-                return res.json();
+                let data = res.json();
+                // parse data, just return the latest stock price
+                console.log('latest data of ' + symbol + ' : ', Object.keys(data['Time Series (Daily)'])[0]);
+                data = data['Time Series (Daily)'][Object.keys(data['Time Series (Daily)'])[0]];
+
+                // change the data key with stockEnum
+                const newData = {};
+                // tslint:disable-next-line:forin
+                for (const key in data) {
+                    newData[stockEnum[key]] = data[key];
+                }
+                console.log(newData);
+                return newData;
             }
             )
             .catch(
@@ -60,12 +87,22 @@ export class StockService {
         );
     }
 
-    addPurchasedStock(stock: Stock) {
-        this.purchasedStockList.push(stock);
+    savePurchasedStock(stockList: Stock[]) {
+        this.purchasedStockList = stockList;
+        this.databaseService.savePubchasedStockList(this.purchasedStockList)
+            .subscribe(
+            (res: Response) => console.log('purchasedStockList is saved.'),
+            (error: Response) => console.log(error)
+            );
     }
 
-    addFavoriteStock(stock: Stock) {
-        this.favoriteStockList.push(stock);
+    saveFavoriteStock(stockList: Stock[]) {
+        this.favoriteStockList = stockList;
+        this.databaseService.saveFavoriteStockList(this.favoriteStockList)
+            .subscribe(
+            (res: Response) => console.log('favoriteStockList is saved.'),
+            (error: Response) => console.log(error)
+            );
     }
 
     deletePurchasedStock(symbol: string) {

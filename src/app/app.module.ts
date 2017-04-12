@@ -12,6 +12,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { SuggestStocksComponent } from './stock/suggest-stocks/suggest-stocks.component';
 import { StockService } from './stock/stock.service';
 import { StockStartComponent } from './stock/stock-start/stock-start.component';
+import { StockDataService } from './stock/stock-data.service';
 
 @NgModule({
   declarations: [
@@ -28,10 +29,9 @@ import { StockStartComponent } from './stock/stock-start/stock-start.component';
     BrowserModule,
     FormsModule,
     HttpModule,
-    JsonpModule,
     AppRoutingModule
   ],
-  providers: [StockService],
+  providers: [StockService, StockDataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

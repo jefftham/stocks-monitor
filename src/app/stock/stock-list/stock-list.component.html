@@ -1,6 +1,12 @@
 <h2>{{subtitle}}</h2>
 <h3>Purchased Stocks</h3>
-<div *ngFor="let stock of purchasedStockList">{{stock.symbol}}</div>
+<div *ngFor="let stock of pubchaseStocksDetail ">{{stock.symbol}}{{stock.info.Close}}</div>
+<div>
+  <button id="savePurchased" class="btn btn-primary" type="button" (click)=onSavePurchase()>Save Purchase</button>
+</div>
 <h3>Favorite Stocks</h3>
-<div *ngFor="let stock of favoriteStockList">{{stock.symbol}}</div>
+<div *ngFor="let stock of favoriteStocksDetail">{{stock.symbol}}{{stock.info.Close}}</div>
+<div>
+  <button id="saveFavorite" class="btn btn-primary" type="button" (click)=onSaveFavorite()>Save Favorite</button>
+</div>
 <router-outlet></router-outlet>
