@@ -1,0 +1,12 @@
+{
+  "/api/**": {
+    "target": "http://www.alphavantage.co/",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/api/": "query?function="
+    }
+
+  }
+}
