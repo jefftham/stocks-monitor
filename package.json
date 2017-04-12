@@ -12,7 +12,9 @@
     "preinstall": "npm install -g http-server",
     "postinstall": "ng build --aot -prod",
     "pree2e": "webdriver-manager update",
-    "deploy": "git push origin master && git push heroku master"
+    "deploy": "git push origin master && git push heroku master",
+    "proxy": "ng serve --proxy-config proxy.conf.json"
+
   },
   "private": true,
   "dependencies": {
@@ -31,7 +33,6 @@
     "bootstrap": "^3.3.7",
     "core-js": "^2.4.1",
     "express": "^4.15.2",
-    "express-redirect": "^1.2.2",
     "rxjs": "^5.1.0",
     "typescript": "~2.2.0",
     "zone.js": "^0.8.4"
