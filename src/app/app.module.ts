@@ -13,6 +13,7 @@ import { SuggestStocksComponent } from './stock/suggest-stocks/suggest-stocks.co
 import { StockService } from './stock/stock.service';
 import { StockStartComponent } from './stock/stock-start/stock-start.component';
 import { StockDataService } from './stock/stock-data.service';
+import { InputTextModule, DataTableModule, ButtonModule, DialogModule } from 'primeng/primeng';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,12 @@ import { StockDataService } from './stock/stock-data.service';
     BrowserModule,
     FormsModule,
     HttpModule,
-    AppRoutingModule
+    AppRoutingModule,
+
+    InputTextModule,
+    DataTableModule,
+    ButtonModule,
+    DialogModule
   ],
   providers: [StockService, StockDataService],
   bootstrap: [AppComponent]

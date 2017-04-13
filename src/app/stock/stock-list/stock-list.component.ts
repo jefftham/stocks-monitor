@@ -7,6 +7,9 @@ import { Subscription } from 'rxjs/Subscription';
 // import 'rxjs/add/operator/takeUntil';
 import 'rxjs/Rx';
 
+import { DataTableModule, SharedModule } from 'primeng/primeng';
+
+
 @Component({
   selector: 'app-stock-list',
   templateUrl: './stock-list.component.html',
@@ -20,6 +23,17 @@ export class StockListComponent implements OnInit, OnDestroy {
   favoriteStocksDetail = [] = [];
   // private ngUnsubscribe: Subject<void> = new Subject<void>();
   private subscriptions: Array<Subscription> = [];
+
+  // the data from both pubchaseStocksDetail and favoriteStocksDetail
+  // states the columns for PrimeNG Table
+  cols: any[] = [
+    { field: 'symbol', header: 'Symbol' },
+    { field: 'info.Open', header: 'Open' },
+    { field: 'info.High', header: 'High' },
+    { field: 'info.Low', header: 'Low' },
+    { field: 'info.Close', header: 'Close' },
+    // { field: 'info.Volume', header: 'Volume' }
+  ]
 
   constructor(private stockservice: StockService) { }
 

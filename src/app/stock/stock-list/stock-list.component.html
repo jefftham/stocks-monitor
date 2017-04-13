@@ -1,12 +1,19 @@
 <h2>{{subtitle}}</h2>
 <h3>Purchased Stocks</h3>
-<div *ngFor="let stock of pubchaseStocksDetail ">{{stock.symbol}}{{stock.info.Close}}</div>
+<div>
+  <p-dataTable [value]="pubchaseStocksDetail" [rows]="15" [paginator]="true" sortMode="multiple">
+    <p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header" [sortable]="true"></p-column>
+  </p-dataTable>
+</div>
+
 <div>
   <button id="savePurchased" class="btn btn-primary" type="button" (click)=onSavePurchase()>Save Purchase</button>
 </div>
 <h3>Favorite Stocks</h3>
-<div *ngFor="let stock of favoriteStocksDetail">{{stock.symbol}}{{stock.info.Close}}</div>
 <div>
+  <p-dataTable [value]="favoriteStocksDetail">
+    <p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header" [sortable]="true"></p-column>
+  </p-dataTable>
   <button id="saveFavorite" class="btn btn-primary" type="button" (click)=onSaveFavorite()>Save Favorite</button>
 </div>
 <router-outlet></router-outlet>
