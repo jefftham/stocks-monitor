@@ -1,8 +1,9 @@
 <h2>{{subtitle}}</h2>
 <h3>Purchased Stocks</h3>
 <div>
-  <p-dataTable [value]="pubchaseStocksDetail" [rows]="15" [paginator]="true" sortMode="multiple">
-    <p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header" [sortable]="true"></p-column>
+  <p-dataTable [(value)]="pubchaseStocksDetail" [editable]="true" [rows]="15" [paginator]="true" [pageLinks]="5" [responsive]="true"
+    [stacked]="stacked" sortMode="multiple">
+    <p-column *ngFor="let col of purCols" [field]="col.field" [header]="col.header" [sortable]="true" [editable]="col.editable"></p-column>
   </p-dataTable>
 </div>
 
@@ -11,8 +12,8 @@
 </div>
 <h3>Favorite Stocks</h3>
 <div>
-  <p-dataTable [value]="favoriteStocksDetail">
-    <p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header" [sortable]="true"></p-column>
+  <p-dataTable [(value)]="favoriteStocksDetail">
+    <p-column *ngFor="let col of favCols" [field]="col.field" [header]="col.header" [sortable]="true"></p-column>
   </p-dataTable>
   <button id="saveFavorite" class="btn btn-primary" type="button" (click)=onSaveFavorite()>Save Favorite</button>
 </div>

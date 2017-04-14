@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/Rx';
 
 import { DataTableModule, SharedModule } from 'primeng/primeng';
+import { StockTableConf } from '../stock-table.conf';
 
 
 @Component({
@@ -18,23 +19,17 @@ import { DataTableModule, SharedModule } from 'primeng/primeng';
 export class StockListComponent implements OnInit, OnDestroy {
   subtitle = 'Stock List';
   purchasedStockList: Stock[] = [];
-  pubchaseStocksDetail = [] = [];
+  pubchaseStocksDetail = [];
   favoriteStockList: Stock[] = [];
-  favoriteStocksDetail = [] = [];
+  favoriteStocksDetail = [];
   // private ngUnsubscribe: Subject<void> = new Subject<void>();
   private subscriptions: Array<Subscription> = [];
 
-  // the data from both pubchaseStocksDetail and favoriteStocksDetail
-  // states the columns for PrimeNG Table
-  cols: any[] = [
-    { field: 'symbol', header: 'Symbol' },
-    { field: 'info.Open', header: 'Open' },
-    { field: 'info.High', header: 'High' },
-    { field: 'info.Low', header: 'Low' },
-    { field: 'info.Close', header: 'Close' },
-    // { field: 'info.Volume', header: 'Volume' }
-    { field: 'data.Avg', header: 'Avg' },
-  ]
+  // the configuration for PrimeNg table
+  // columns
+  purCols: any[] = StockTableConf['purCols'];
+  favCols: any[] = StockTableConf['favCols'];
+
 
   constructor(private stockservice: StockService) { }
 
@@ -88,61 +83,18 @@ export class StockListComponent implements OnInit, OnDestroy {
 
   }
 
-  // modify by reference
-  // update the stock list from database
-  updateStockDetail(symbol: string, info: object, target: any[]) {
 
-    // build the object
-    let stockDetail = {
-      symbol: symbol,
-      info: info,
-      data: {}
-    }
-
-    // get custom data from stock list
-    for (const stock of this.purchasedStockList) {
-      if (stock.symbol === symbol) {
-        stockDetail.data['Avg'] = stock.avg;
-      }
-    }
-
-    for (const stock of this.favoriteStockList) {
-      if (stock.symbol === symbol) {
-        stockDetail.data['Avg'] = stock.avg;
-      }
-    }
-
-    // symbol is added
-    let found = false;
-    //for (let [index, stock] of target.entries()) {
-    target.forEach((stock, index, array) => {
-      if (stock.symbol === symbol) {
-        array.splice(index, 1, stockDetail);
-        found = true;
-      }
-    });
-
-
-    // // symbol is added
-    // for (const stock of target) {
-    //   if (stock.symbol === symbol) {
-    //     found = true;
-    //     stock.info = info;
-    //   }
-    // }
-
-    // symbol is not added, add it now
-    if (!found) {
-      target.push(stockDetail);
-    }
-
-    // assign the custome data to the  stock detail
-    // custom data should add in this function, for the stock detail list added from observable
-
-
-
-  }
   onSavePurchase() {
+    // update the changed data from pubchaseStocksDetail
+    for (const stockDetail of this.pubchaseStocksDetail) {
+      for (const stock of this.purchasedStockList) {
+        if (stock.symbol === stockDetail.symbol) {
+          for (const key in stockDetail.data) {
+            stock[key] = parseFloat(stockDetail.data[key]);
+          }
+        }
+      }
+    }
     this.stockservice.savePurchasedStock(this.purchasedStockList);
   }
 
@@ -155,6 +107,42 @@ export class StockListComponent implements OnInit, OnDestroy {
 
     for (const subs of this.subscriptions) {
       subs.unsubscribe();
+    }
+  }
+
+  // modify by reference
+  // update the stock list from database
+  updateStockDetail(symbol: string, info: object, target: any[]) {
+
+    // build the object
+    let stockDetail = {
+      symbol: symbol,
+      info: info,
+      data: {}
+    }
+    // get custom data from stock list
+    for (const stock of this.purchasedStockList) {
+      if (stock.symbol === symbol) {
+        stockDetail.data['Avg'] = stock['Avg'].toFixed(2);
+      }
+    }
+    for (const stock of this.favoriteStockList) {
+      if (stock.symbol === symbol) {
+        stockDetail.data['Avg'] = stock['Avg'].toFixed(2);
+      }
+    }
+    // symbol is added
+    let found = false;
+    // for (let [index, stock] of target.entries()) {
+    target.forEach((stock, index, array) => {
+      if (stock.symbol === symbol) {
+        array.splice(index, 1, stockDetail);
+        found = true;
+      }
+    });
+    // symbol is not added, add it now
+    if (!found) {
+      target.push(stockDetail);
     }
   }
 

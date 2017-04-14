@@ -72,7 +72,7 @@ export class StockService {
                 const newData = {};
                 // tslint:disable-next-line:forin
                 for (const key in data) {
-                    newData[stockEnum[key]] = data[key];
+                    newData[stockEnum[key]] = parseFloat(data[key]).toFixed(2);
                 }
                 console.log(newData);
                 return newData;
