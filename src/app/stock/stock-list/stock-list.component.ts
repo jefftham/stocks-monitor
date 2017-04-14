@@ -33,6 +33,7 @@ export class StockListComponent implements OnInit, OnDestroy {
     { field: 'info.Low', header: 'Low' },
     { field: 'info.Close', header: 'Close' },
     // { field: 'info.Volume', header: 'Volume' }
+    { field: 'data.Avg', header: 'Avg' },
   ]
 
   constructor(private stockservice: StockService) { }
@@ -51,11 +52,12 @@ export class StockListComponent implements OnInit, OnDestroy {
           const newObserver = this.stockservice.getLiveStockInfo(stock.symbol)
             // .takeUntil(this.ngUnsubscribe)
             .subscribe(
-            (data: any) => {
-              return this.updateStockDetail(stock.symbol, data, this.pubchaseStocksDetail);
+            (info: any) => {
+              return this.updateStockDetail(stock.symbol, info, this.pubchaseStocksDetail);
             }
             );
 
+          // add to subscriptions, for destroy ithe observable when change component
           this.subscriptions.push(newObserver);
         }
       },
@@ -73,8 +75,8 @@ export class StockListComponent implements OnInit, OnDestroy {
           const newObserver = this.stockservice.getLiveStockInfo(stock.symbol)
             // .takeUntil(this.ngUnsubscribe)
             .subscribe(
-            (data: any) => {
-              return this.updateStockDetail(stock.symbol, data, this.favoriteStocksDetail);
+            (info: any) => {
+              return this.updateStockDetail(stock.symbol, info, this.favoriteStocksDetail);
             }
             );
 
@@ -87,23 +89,58 @@ export class StockListComponent implements OnInit, OnDestroy {
   }
 
   // modify by reference
+  // update the stock list from database
   updateStockDetail(symbol: string, info: object, target: any[]) {
-    let found = false;
-    // symbol is added
-    for (let stock of target) {
+
+    // build the object
+    let stockDetail = {
+      symbol: symbol,
+      info: info,
+      data: {}
+    }
+
+    // get custom data from stock list
+    for (const stock of this.purchasedStockList) {
       if (stock.symbol === symbol) {
-        found = true;
-        stock.info = info;
+        stockDetail.data['Avg'] = stock.avg;
       }
     }
 
+    for (const stock of this.favoriteStockList) {
+      if (stock.symbol === symbol) {
+        stockDetail.data['Avg'] = stock.avg;
+      }
+    }
+
+    // symbol is added
+    let found = false;
+    //for (let [index, stock] of target.entries()) {
+    target.forEach((stock, index, array) => {
+      if (stock.symbol === symbol) {
+        array.splice(index, 1, stockDetail);
+        found = true;
+      }
+    });
+
+
+    // // symbol is added
+    // for (const stock of target) {
+    //   if (stock.symbol === symbol) {
+    //     found = true;
+    //     stock.info = info;
+    //   }
+    // }
+
     // symbol is not added, add it now
     if (!found) {
-      target.push({
-        symbol: symbol,
-        info: info
-      })
+      target.push(stockDetail);
     }
+
+    // assign the custome data to the  stock detail
+    // custom data should add in this function, for the stock detail list added from observable
+
+
+
   }
   onSavePurchase() {
     this.stockservice.savePurchasedStock(this.purchasedStockList);
