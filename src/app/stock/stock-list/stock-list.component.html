@@ -5,9 +5,8 @@
     [stacked]="stacked" sortMode="multiple">
     <p-column *ngFor="let col of purCols" [field]="col.field" [header]="col.header" [sortable]="true" [editable]="col.editable"></p-column>
 
-    <p-column field="data.avg" header="Avg " [sortable]="true " [editable]="true " [style]="{ 'overflow': 'visible'} ">
+    <!--<p-column field="avg" header="Avg " [sortable]="true " [editable]="true "></p-column>-->
 
-    </p-column>
   </p-dataTable>
 </div>
 
@@ -16,8 +15,9 @@
 </div>
 <h3>Favorite Stocks</h3>
 <div>
-  <p-dataTable [(value)]="favoriteStockList ">
-    <p-column *ngFor="let col of favCols " [field]="col.field " [header]="col.header " [sortable]="true "></p-column>
+  <p-dataTable [(value)]="favoriteStockList" [editable]="true" [rows]="15" [paginator]="true" [pageLinks]="5" [responsive]="true"
+    [stacked]="stacked" sortMode="multiple">
+    <p-column *ngFor="let col of favCols " [field]="col.field " [header]="col.header " [sortable]="true" [editable]="col.editable"></p-column>
   </p-dataTable>
   <button id="saveFavorite " class="btn btn-primary " type="button " (click)=onSaveFavorite()>Save Favorite</button>
 </div>

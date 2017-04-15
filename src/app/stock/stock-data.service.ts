@@ -28,7 +28,7 @@ export class StockDataService {
             );
     }
 
-    getPubchasedStockList() {
+    getPurchasedStockList() {
         return this.http.get(this.purchasedDB)
             .map(
             (res: Response) => {

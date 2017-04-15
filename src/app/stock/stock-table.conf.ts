@@ -6,12 +6,12 @@ export class StockTableConf {
         { field: 'info.low', header: 'Low' },
         { field: 'info.close', header: 'Close' },
         // { field: 'info.Volume', header: 'Volume' }
-        //{ field: 'data.avg', header: 'Avg', 'editable': true },
+        { field: 'avg', header: 'Avg', 'editable': true },
     ];
 
     static purCols: any[] = [
         ...StockTableConf.commCols,
-        // { field: 'data.purchasePrice', header: 'Purchase', 'editable': true },
+        { field: 'purchasedPrice', header: 'Purchased', 'editable': true },
 
     ];
 

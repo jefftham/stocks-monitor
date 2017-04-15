@@ -37,11 +37,11 @@ export class StockListComponent implements OnInit, OnDestroy {
   // ref: http://stackoverflow.com/questions/34442693/how-to-cancel-a-subscription-in-angular2
   ngOnInit() {
     // get purchase stock list from db
-    this.stockInfoService.getPurchasedStockList().subscribe(
+    this.stockDataService.getPurchasedStockList().subscribe(
       (data: any[]) => {
         this.purchasedStockList = data;
         console.log('purchased stocks: ', this.purchasedStockList);
-        this.stockDataService.savePurchasedStockList(this.purchasedStockList);
+        // this.stockDataService.savePurchasedStockList(this.purchasedStockList);
         // get stock live data
         for (const stock of this.purchasedStockList) {
           const newObserver = this.stockInfoService.getLiveStockInfo(stock.symbol)
@@ -60,11 +60,11 @@ export class StockListComponent implements OnInit, OnDestroy {
     );
 
     // get favorite  stock list from db
-    this.stockInfoService.getFavoriteStockList().subscribe(
+    this.stockDataService.getFavoriteStockList().subscribe(
       (data: any[]) => {
         this.favoriteStockList = data;
         console.log('favarite stocks: ', this.favoriteStockList);
-        this.stockDataService.saveFavoriteStockList(this.favoriteStockList);
+        // this.stockDataService.saveFavoriteStockList(this.favoriteStockList);
         // get stock live data
         for (const stock of this.favoriteStockList) {
           const newObserver = this.stockInfoService.getLiveStockInfo(stock.symbol)

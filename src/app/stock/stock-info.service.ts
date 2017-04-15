@@ -40,15 +40,15 @@ export class StockInfoService {
     constructor(private http: Http, private databaseService: StockDataService) { }
 
 
-    getPurchasedStockList() {
-        return this.databaseService.getPubchasedStockList();
+    // getPurchasedStockList() {
+    //     return this.databaseService.getPubchasedStockList();
 
 
-    }
+    // }
 
-    getFavoriteStockList() {
-        return this.databaseService.getFavoriteStockList();
-    }
+    // getFavoriteStockList() {
+    //     return this.databaseService.getFavoriteStockList();
+    // }
 
 
 
@@ -88,15 +88,15 @@ export class StockInfoService {
     }
 
 
-    deletePurchasedStock(symbol: string) {
-        this.purchasedStockList = this.purchasedStockList.filter(
-            (stock) => { return stock.symbol === symbol; }
-        );
-    }
+    // deletePurchasedStock(symbol: string) {
+    //     this.purchasedStockList = this.purchasedStockList.filter(
+    //         (stock) => { return stock.symbol === symbol; }
+    //     );
+    // }
 
-    deleteFavoriteStock(symbol: string) {
-        this.favoriteStockList = this.favoriteStockList.filter(
-            (stock) => { return stock.symbol === symbol; }
-        );
-    }
+    // deleteFavoriteStock(symbol: string) {
+    //     this.favoriteStockList = this.favoriteStockList.filter(
+    //         (stock) => { return stock.symbol === symbol; }
+    //     );
+    // }
 }
