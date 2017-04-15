@@ -16,19 +16,19 @@ const apiKey = 1537;
 // const headers = new Headers({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
 
 const stockEnum = {
-    '1. open': 'Open',
+    '1. open': 'open',
 
-    '2. high': 'High',
+    '2. high': 'high',
 
-    '3. low': 'Low',
+    '3. low': 'low',
 
-    '4. close': 'Close',
+    '4. close': 'close',
 
-    '5. volume': 'Volume'
+    '5. volume': 'volume'
 };
 
 @Injectable()
-export class StockService {
+export class StockInfoService {
 
     private purchasedStockList: Stock[] = [];
     // private purchasedStockList: Stock[] = [];
@@ -87,23 +87,6 @@ export class StockService {
         );
     }
 
-    savePurchasedStock(stockList: Stock[]) {
-        this.purchasedStockList = stockList;
-        this.databaseService.savePubchasedStockList(this.purchasedStockList)
-            .subscribe(
-            (res: Response) => console.log('purchasedStockList is saved.'),
-            (error: Response) => console.log(error)
-            );
-    }
-
-    saveFavoriteStock(stockList: Stock[]) {
-        this.favoriteStockList = stockList;
-        this.databaseService.saveFavoriteStockList(this.favoriteStockList)
-            .subscribe(
-            (res: Response) => console.log('favoriteStockList is saved.'),
-            (error: Response) => console.log(error)
-            );
-    }
 
     deletePurchasedStock(symbol: string) {
         this.purchasedStockList = this.purchasedStockList.filter(

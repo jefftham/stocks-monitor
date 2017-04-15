@@ -12,12 +12,20 @@ export class StockDataService {
 
     constructor(private http: Http) { }
 
-    savePubchasedStockList(purchasedStockList: Stock[]) {
-        return this.http.put(this.purchasedDB, purchasedStockList);
+    savePurchasedStockList(purchasedStockList: Stock[]) {
+        return this.http.put(this.purchasedDB, purchasedStockList)
+            .subscribe(
+            (res: Response) => console.log('purchasedStockList is saved.'),
+            (error: Response) => { console.log(error); console.log('purchasedStockList that going to save : ', purchasedStockList) }
+            );
     }
 
     saveFavoriteStockList(favoriteStockList: Stock[]) {
-        return this.http.put(this.favoriteDB, favoriteStockList);
+        return this.http.put(this.favoriteDB, favoriteStockList)
+            .subscribe(
+            (res: Response) => console.log('favoriteStockList is saved.'),
+            (error: Response) => console.log(error)
+            );
     }
 
     getPubchasedStockList() {

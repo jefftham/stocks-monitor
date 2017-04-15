@@ -10,10 +10,10 @@ import { StockListComponent } from './stock/stock-list/stock-list.component';
 import { StockItemComponent } from './stock/stock-item/stock-item.component';
 import { AppRoutingModule } from './app-routing.module';
 import { SuggestStocksComponent } from './stock/suggest-stocks/suggest-stocks.component';
-import { StockService } from './stock/stock.service';
 import { StockStartComponent } from './stock/stock-start/stock-start.component';
 import { StockDataService } from './stock/stock-data.service';
 import { InputTextModule, DataTableModule, ButtonModule, DialogModule } from 'primeng/primeng';
+import { StockInfoService } from './stock/stock-info.service';
 
 @NgModule({
   declarations: [
@@ -37,7 +37,7 @@ import { InputTextModule, DataTableModule, ButtonModule, DialogModule } from 'pr
     ButtonModule,
     DialogModule
   ],
-  providers: [StockService, StockDataService],
+  providers: [StockInfoService, StockDataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

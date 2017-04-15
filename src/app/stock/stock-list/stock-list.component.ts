@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { StockService } from '../stock.service';
 import { Stock } from '../stock.model';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -9,6 +8,8 @@ import 'rxjs/Rx';
 
 import { DataTableModule, SharedModule } from 'primeng/primeng';
 import { StockTableConf } from '../stock-table.conf';
+import { StockInfoService } from '../stock-info.service';
+import { StockDataService } from '../stock-data.service';
 
 
 @Component({
@@ -19,9 +20,8 @@ import { StockTableConf } from '../stock-table.conf';
 export class StockListComponent implements OnInit, OnDestroy {
   subtitle = 'Stock List';
   purchasedStockList: Stock[] = [];
-  pubchaseStocksDetail = [];
   favoriteStockList: Stock[] = [];
-  favoriteStocksDetail = [];
+
   // private ngUnsubscribe: Subject<void> = new Subject<void>();
   private subscriptions: Array<Subscription> = [];
 
@@ -31,24 +31,24 @@ export class StockListComponent implements OnInit, OnDestroy {
   favCols: any[] = StockTableConf['favCols'];
 
 
-  constructor(private stockservice: StockService) { }
+  constructor(private stockInfoService: StockInfoService, private stockDataService: StockDataService) { }
 
   // ref: http://stackoverflow.com/questions/38008334/angular2-rxjs-when-should-i-unsubscribe-from-subscription
   // ref: http://stackoverflow.com/questions/34442693/how-to-cancel-a-subscription-in-angular2
   ngOnInit() {
     // get purchase stock list from db
-    this.stockservice.getPurchasedStockList().subscribe(
+    this.stockInfoService.getPurchasedStockList().subscribe(
       (data: any[]) => {
         this.purchasedStockList = data;
         console.log('purchased stocks: ', this.purchasedStockList);
-        this.stockservice.savePurchasedStock(this.purchasedStockList);
+        this.stockDataService.savePurchasedStockList(this.purchasedStockList);
         // get stock live data
         for (const stock of this.purchasedStockList) {
-          const newObserver = this.stockservice.getLiveStockInfo(stock.symbol)
+          const newObserver = this.stockInfoService.getLiveStockInfo(stock.symbol)
             // .takeUntil(this.ngUnsubscribe)
             .subscribe(
             (info: any) => {
-              return this.updateStockDetail(stock.symbol, info, this.pubchaseStocksDetail);
+              return this.updateStockDetail(stock.symbol, info, this.purchasedStockList);
             }
             );
 
@@ -60,18 +60,18 @@ export class StockListComponent implements OnInit, OnDestroy {
     );
 
     // get favorite  stock list from db
-    this.stockservice.getFavoriteStockList().subscribe(
+    this.stockInfoService.getFavoriteStockList().subscribe(
       (data: any[]) => {
         this.favoriteStockList = data;
         console.log('favarite stocks: ', this.favoriteStockList);
-        this.stockservice.saveFavoriteStock(this.favoriteStockList);
+        this.stockDataService.saveFavoriteStockList(this.favoriteStockList);
         // get stock live data
         for (const stock of this.favoriteStockList) {
-          const newObserver = this.stockservice.getLiveStockInfo(stock.symbol)
+          const newObserver = this.stockInfoService.getLiveStockInfo(stock.symbol)
             // .takeUntil(this.ngUnsubscribe)
             .subscribe(
             (info: any) => {
-              return this.updateStockDetail(stock.symbol, info, this.favoriteStocksDetail);
+              return this.updateStockDetail(stock.symbol, info, this.favoriteStockList);
             }
             );
 
@@ -85,22 +85,13 @@ export class StockListComponent implements OnInit, OnDestroy {
 
 
   onSavePurchase() {
-    // update the changed data from pubchaseStocksDetail
-    for (const stockDetail of this.pubchaseStocksDetail) {
-      for (const stock of this.purchasedStockList) {
-        if (stock.symbol === stockDetail.symbol) {
-          for (const key in stockDetail.data) {
-            stock[key] = parseFloat(stockDetail.data[key]);
-          }
-        }
-      }
-    }
-    this.stockservice.savePurchasedStock(this.purchasedStockList);
+    this.stockDataService.savePurchasedStockList(this.purchasedStockList);
   }
 
   onSaveFavorite() {
-    this.stockservice.saveFavoriteStock(this.favoriteStockList);
+    this.stockDataService.saveFavoriteStockList(this.favoriteStockList);
   }
+
   ngOnDestroy() {
     console.log('unsubscribe all Observables in stock-list component');
     //  this.ngUnsubscribe.complete();
@@ -112,38 +103,14 @@ export class StockListComponent implements OnInit, OnDestroy {
 
   // modify by reference
   // update the stock list from database
-  updateStockDetail(symbol: string, info: object, target: any[]) {
+  updateStockDetail(symbol: string, info: object, target: Stock[]) {
 
-    // build the object
-    let stockDetail = {
-      symbol: symbol,
-      info: info,
-      data: {}
-    }
-    // get custom data from stock list
-    for (const stock of this.purchasedStockList) {
+    target.forEach((stock, index, thisArray) => {
       if (stock.symbol === symbol) {
-        stockDetail.data['Avg'] = stock['Avg'].toFixed(2);
-      }
-    }
-    for (const stock of this.favoriteStockList) {
-      if (stock.symbol === symbol) {
-        stockDetail.data['Avg'] = stock['Avg'].toFixed(2);
-      }
-    }
-    // symbol is added
-    let found = false;
-    // for (let [index, stock] of target.entries()) {
-    target.forEach((stock, index, array) => {
-      if (stock.symbol === symbol) {
-        array.splice(index, 1, stockDetail);
-        found = true;
+        stock.info = info;
       }
     });
-    // symbol is not added, add it now
-    if (!found) {
-      target.push(stockDetail);
-    }
+    console.log('updated stocks : ', target);
   }
 
 
