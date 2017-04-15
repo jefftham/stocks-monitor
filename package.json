@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "node server.js",
-    "build": "ng build",
+    "build": "ng build --aot -prod",
     "test": "ng test",
     "lint": "tslint \"src/**/*.ts\"",
     "e2e": "protractor",
