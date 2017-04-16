@@ -12,7 +12,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { SuggestStocksComponent } from './stock/suggest-stocks/suggest-stocks.component';
 import { StockStartComponent } from './stock/stock-start/stock-start.component';
 import { StockDataService } from './stock/stock-data.service';
-import { InputTextModule, DataTableModule, ButtonModule, DialogModule } from 'primeng/primeng';
+import { InputTextModule, DataTableModule, ButtonModule, DialogModule, MultiSelectModule } from 'primeng/primeng';
 import { StockInfoService } from './stock/stock-info.service';
 
 @NgModule({
@@ -35,7 +35,8 @@ import { StockInfoService } from './stock/stock-info.service';
     InputTextModule,
     DataTableModule,
     ButtonModule,
-    DialogModule
+    DialogModule,
+    MultiSelectModule
   ],
   providers: [StockInfoService, StockDataService],
   bootstrap: [AppComponent]
