@@ -23,8 +23,6 @@ export class StockListComponent implements OnInit, OnDestroy {
   purchasedStockList: Stock[] = [];
   favoriteStockList: Stock[] = [];
   selectedStock: Stock;
-  // newStock = { symbol: '', info: {} };
-  newStock = new Stock('');
 
   // private ngUnsubscribe: Subject<void> = new Subject<void>();
   private subscriptions: Array<Subscription> = [];
@@ -90,33 +88,32 @@ export class StockListComponent implements OnInit, OnDestroy {
 
   }
 
-  onAddPurchasedStock() {
+  onAddNewStock(newSymbol: string, stockListName: string) {
     // console.log('newStock: ', this.newStock);
     // console.log('newStock symbol : ', this.newStock.symbol);
-    const symbol = this.newStock.symbol = this.newStock.symbol.toUpperCase();
-    if (this.newStock.symbol === '') {
+    const symbol = newSymbol.toUpperCase();
+    const stockList: Stock[] = this.stringToStockList(stockListName);
+
+    if (symbol === '') {
       console.log('empty stock symbol.');
-    } else if (this.stockAdded(symbol, this.purchasedStockList)) {
+    } else if (this.stockAdded(symbol, stockList)) {
       console.log(symbol + ' is added.');
     } else {
-      this.purchasedStockList.push(this.newStock);
+      stockList.push(new Stock(symbol));
 
-      const newObserver = this.stockInfoService.getLiveStockInfo(this.newStock.symbol)
+      const newObserver = this.stockInfoService.getLiveStockInfo(symbol)
         .subscribe(
         (info: any) => {
           console.log('subscribe: ', symbol);
-          return this.updateStockDetail(symbol, info, this.purchasedStockList);
+          return this.updateStockDetail(symbol, info, stockList);
         }
         );
-
       // add to subscriptions, for destroy ithe observable when change component
       this.subscriptions.push(newObserver);
 
-      // reset this.newStock variable
-      this.newStock = new Stock('');
-
     }
   }
+
 
   stockAdded(symbol: string, target: Stock[]) {
     let added: boolean = false;
@@ -130,20 +127,36 @@ export class StockListComponent implements OnInit, OnDestroy {
 
   onDeleteStock(stock: Stock, stockListName: string) {
     console.log('on delete stock: ', stock);
-    let stockList;
-    if (stockListName === 'purchasedStockList') {
-      stockList = this.purchasedStockList;
-    } else if (stockListName === 'favoriteStockList') {
-      stockList = this.favoriteStockList;
-    } else {
-      console.log('onDeleteStock(): unknown stock list name ');
-    }
+    const stockList: Stock[] = this.stringToStockList(stockListName);
 
     stockList.forEach((e, i, a) => {
       if (e.symbol === stock.symbol) {
         a.splice(i, 1);
       }
     });
+
+    // save the stock list
+    this.onSavePurchase();
+    this.onSaveFavorite();
+  }
+
+  onMoveStockTo(stock: Stock, stockListName: string) {
+    console.log('on move stock: ', stock);
+    const stockList: Stock[] = this.stringToStockList(stockListName);
+
+    stockList.push(stock);
+    // delete the stock from current list
+    const reverseStockListName = stockListName !== 'purchasedStockList' ? 'purchasedStockList' : 'favoriteStockList';
+    this.onDeleteStock(stock, reverseStockListName);
+
+  }
+
+  stringToStockList(stockListName: string) {
+    switch (stockListName) {
+      case 'purchasedStockList': return this.purchasedStockList;
+      case 'favoriteStockList': return this.favoriteStockList;
+      default: console.log('unknown stock list name.');
+    }
   }
 
   onDebug() {

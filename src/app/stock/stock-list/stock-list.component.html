@@ -1,32 +1,34 @@
 <h2>{{subtitle}}</h2>
+
 <button pButton type="button " (click)=onDebug() label="Show Detail in Console"></button>
 
+<!-- Prime Ng Data Table for Purchased Stock List-->
 <div>
   <p-dataTable [(value)]="purchasedStockList" [editable]="true" [rows]="15" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,15,20]"
     [responsive]="true" sortMode="multiple" resizableColumns="true" reorderableColumns="true" expandableRows="true">
+    <!--Header section-->
     <p-header>
       <h3>Purchased Stocks</h3>
       <!--
-      <div style="text-align:right">
-        <p-multiSelect [options]="purColsOptions" [(ngModel)]="purCols"></p-multiSelect>
-      </div>
--->
+        <div style="text-align:right">
+          <p-multiSelect [options]="purColsOptions" [(ngModel)]="purCols"></p-multiSelect>
+        </div>
+        -->
     </p-header>
+    <!-- Define the columns of the table-->
     <div class="row">
-
+      <!-- First column of the table - list all the actions -->
       <p-column [style]="{'width':'100px', 'text-align':'right'}" expander="true" styleClass="col-icon">
         <ng-template let-stock="rowData" pTemplate type="body">
           <button type="button" pButton icon="fa-times" class="ui-button-danger" (click)="onDeleteStock(stock, 'purchasedStockList')"></button>
-          <button type="button" pButton icon="fa-arrow-down"></button>
+          <button type="button" pButton icon="fa-arrow-down" (click)="onMoveStockTo(stock, 'favoriteStockList')"></button>
         </ng-template>
       </p-column>
-
-
+      <!-- Dynamically  list the columns based on the array of  purCols -->
       <p-column *ngFor="let col of purCols" [field]="col.field" [header]="col.header" [sortable]="true" [editable]="col.editable"></p-column>
-
     </div>
 
-
+    <!-- The row expansion of each row-->
     <ng-template let-stock pTemplate="rowexpansion">
       <div class="ui-grid ui-grid-responsive ui-fluid" style="font-size:16px;padding:20px">
         <div class="ui-grid-row">
@@ -45,15 +47,15 @@
       </div>
     </ng-template>
 
-
+    <!-- Footer section-->
     <p-footer>
       <div class="ui-helper-clearfix row" style="width:100%">
         <div class="col-md-3" style="text-align: left">
-          <input type="text" pInputText id="newSymbol" [(ngModel)]="newStock.symbol" style="text-transform:uppercase" placeholder="Enter symbol"
-          />
-          <button type="button" class="ui-button-success" pButton icon="fa-plus" (click)="onAddPurchasedStock()" label="Add"> </button>
+          <input type="text" pInputText #newPurSymbol style="text-transform:uppercase" placeholder="Enter symbol" />
+          <button type="button" class="ui-button-success" pButton icon="fa-plus" (click)="onAddNewStock(newPurSymbol.value, 'purchasedStockList'); newPurSymbol.value='';"
+            label="Add"> </button>
         </div>
-        <div class="col-md-3" style="text-align: left"> <button id="savePurchased" pButton type="button " (click)=onSavePurchase() label="Save Purchase"></button></div>
+        <div class="col-md-3" style="text-align: left"> <button pButton type="button" (click)=onSavePurchase() label="Save Purchase"></button></div>
       </div>
     </p-footer>
   </p-dataTable>
@@ -62,18 +64,40 @@
 <br/>
 <br/>
 
+<!-- Prime Ng Data Table for Favorite Stock List-->
 <div>
   <p-dataTable [(value)]="favoriteStockList" [editable]="true" [rows]="15" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,15,20]"
-    [responsive]="true" sortMode="multiple" resizableColumns="true" reorderableColumns="true">
+    [responsive]="true" sortMode="multiple" resizableColumns="true" reorderableColumns="true" expandableRows="true">
+    <!--Header section-->
     <p-header>
       <h3>Favorite Stocks</h3>
-
     </p-header>
-    <p-column *ngFor="let col of favCols " [field]="col.field " [header]="col.header " [sortable]="true" [editable]="col.editable"></p-column>
+    <!-- Define the columns of the table-->
+    <div class="row">
+      <!-- First column of the table - list all the actions -->
+      <p-column [style]="{'width':'100px', 'text-align':'right'}" expander="true" styleClass="col-icon">
+        <ng-template let-stock="rowData" pTemplate type="body">
+          <button type="button" pButton icon="fa-times" class="ui-button-danger" (click)="onDeleteStock(stock, 'favoriteStockList')"></button>
+          <button type="button" pButton icon="fa-arrow-up" (click)="onMoveStockTo(stock, 'purchasedStockList')"></button>
+        </ng-template>
+      </p-column>
+      <!-- Dynamically  list the columns based on the array of  purCols -->
+      <p-column *ngFor="let col of favCols " [field]="col.field " [header]="col.header " [sortable]="true" [editable]="col.editable"></p-column>
+    </div>
+    <!-- The row expansion of each row-->
+    <ng-template let-stock pTemplate="rowexpansion"></ng-template>
+    <!-- Footer section-->
     <p-footer>
-      <div style="text-align: left"><button id="saveFavorite " class="btn btn-primary " type="button " (click)=onSaveFavorite()>Save Favorite</button></div>
+      <div class="ui-helper-clearfix row" style="width:100%">
+        <div class="col-md-3" style="text-align: left">
+          <input type="text" pInputText #newFavSymbol style="text-transform:uppercase" placeholder="Enter symbol" />
+          <button type="button" class="ui-button-success" pButton icon="fa-plus" (click)="onAddNewStock(newFavSymbol.value, 'favoriteStockList'); newFavSymbol.value='';"
+            label="Add"> </button>
+        </div>
+        <div class="col-md-3" style="text-align: left"> <button id="saveFavorite" pButton type="button " (click)=onSaveFavorite() label="Save Favorite"></button></div>
+      </div>
     </p-footer>
   </p-dataTable>
-
 </div>
+
 <router-outlet></router-outlet>
