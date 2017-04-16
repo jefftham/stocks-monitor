@@ -33,7 +33,7 @@ export class StockListComponent implements OnInit, OnDestroy {
   // columns
   purCols: any[] = StockTableConf['purCols'];
   favCols: any[] = StockTableConf['favCols'];
-  purColsOptions: SelectItem[] = [];
+  // purColsOptions: SelectItem[] = [];
 
   constructor(private stockInfoService: StockInfoService, private stockDataService: StockDataService) { }
 
@@ -83,10 +83,10 @@ export class StockListComponent implements OnInit, OnDestroy {
       (error: Response) => console.log(error)
     );
 
-    // for DataTable : allow user select witch column to display
-    for (let i = 0; i < this.purCols.length; i++) {
-      this.purColsOptions.push({ label: this.purCols[i].header, value: this.purCols[i] });
-    }
+    /*    // for DataTable : allow user select witch column to display
+        for (let i = 0; i < this.purCols.length; i++) {
+          this.purColsOptions.push({ label: this.purCols[i].header, value: this.purCols[i] });
+        }*/
 
   }
 
