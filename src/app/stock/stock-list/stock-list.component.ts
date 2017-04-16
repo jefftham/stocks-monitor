@@ -190,6 +190,8 @@ export class StockListComponent implements OnInit, OnDestroy {
       if (stock.symbol === symbol) {
         console.log('updateStockDetail is updating: ', stock.symbol)
         stock['info'] = info;
+        const statusTodayPercentage = ((stock.info['close'] - stock.info['open']) / stock.info['open'] * 100).toFixed(2);
+        stock.info['status'] = statusTodayPercentage + '%';
       }
     });
     console.log('updated stocks : ', target);

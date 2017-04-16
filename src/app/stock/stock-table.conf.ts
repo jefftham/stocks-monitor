@@ -5,6 +5,7 @@ export class StockTableConf {
         { field: 'info.high', header: 'High' },
         { field: 'info.low', header: 'Low' },
         { field: 'info.close', header: 'Close' },
+        { field: 'info.status', header: 'Status' },
         // { field: 'info.Volume', header: 'Volume' }
         { field: 'avg', header: 'Avg', 'editable': true },
     ];
