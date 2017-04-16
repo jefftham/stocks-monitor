@@ -5,6 +5,7 @@ import 'rxjs/Rx';
 
 import { Stock } from './stock.model';
 import { StockDataService } from './stock-data.service';
+import { MessageService } from '../shared/message.service';
 
 // const api = 'https://www.alphavantage.co/query?function=';
 const api = '/api/';
@@ -37,7 +38,7 @@ export class StockInfoService {
     private lastRefreshed;
 
 
-    constructor(private http: Http, private databaseService: StockDataService) { }
+    constructor(private http: Http, private databaseService: StockDataService, private messageService: MessageService) { }
 
 
     // getPurchasedStockList() {
@@ -65,7 +66,7 @@ export class StockInfoService {
                 // console.log(res);
                 let data = res.json();
                 // parse data, just return the latest stock price
-                console.log('latest data of ' + symbol + ' : ', Object.keys(data['Time Series (Daily)'])[0]);
+                // console.log('latest data of ' + symbol + ' : ', Object.keys(data['Time Series (Daily)'])[0]);
                 data = data['Time Series (Daily)'][Object.keys(data['Time Series (Daily)'])[0]];
 
                 // change the data key with stockEnum
@@ -74,7 +75,8 @@ export class StockInfoService {
                 for (const key in data) {
                     newData[stockEnum[key]] = parseFloat(data[key]).toFixed(2);
                 }
-                console.log(newData);
+                // console.log(newData);
+                this.messageService.inbox.next(this.messageService.send('info', 'Stock Info Update: ' + symbol));
                 return newData;
             }
             )

@@ -1,0 +1,8 @@
+.ui-growl {
+  position: fixed;
+  top: 80%;
+  left: 70%;
+  width: 360px;
+  height: 80px;
+  z-index: auto;
+}

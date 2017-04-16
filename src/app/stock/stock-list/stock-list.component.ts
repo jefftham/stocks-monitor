@@ -10,6 +10,7 @@ import { DataTableModule, SharedModule, SelectItem } from 'primeng/primeng';
 import { StockTableConf } from '../stock-table.conf';
 import { StockInfoService } from '../stock-info.service';
 import { StockDataService } from '../stock-data.service';
+import { MessageService } from '../../shared/message.service';
 
 
 @Component({
@@ -33,11 +34,17 @@ export class StockListComponent implements OnInit, OnDestroy {
   favCols: any[] = StockTableConf['favCols'];
   // purColsOptions: SelectItem[] = [];
 
-  constructor(private stockInfoService: StockInfoService, private stockDataService: StockDataService) { }
+  constructor(private stockInfoService: StockInfoService,
+    private stockDataService: StockDataService,
+    private messageService: MessageService) { }
 
   // ref: http://stackoverflow.com/questions/38008334/angular2-rxjs-when-should-i-unsubscribe-from-subscription
   // ref: http://stackoverflow.com/questions/34442693/how-to-cancel-a-subscription-in-angular2
   ngOnInit() {
+
+    // this.messageService.inbox.next(this.messageService.send('info', 'Info Message', 'PrimeNG rocks 1'));
+    // this.messageService.inbox.next(this.messageService.send('info', 'Info Message', 'PrimeNG rocks 2'));
+
     // get purchase stock list from db
     this.stockDataService.getPurchasedStockList().subscribe(
       (data: any[]) => {
