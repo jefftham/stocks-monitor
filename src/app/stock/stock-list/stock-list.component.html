@@ -1,7 +1,8 @@
 <h2>{{subtitle}}</h2>
 
-<button pButton type="button " (click)=onDebug() label="Show Detail in Console"></button>
-
+<!--
+  <button pButton type="button " (click)=onDebug() label="Show Detail in Console"></button>
+-->
 <!-- Prime Ng Data Table for Purchased Stock List-->
 <div>
   <p-dataTable [(value)]="purchasedStockList" [editable]="true" [rows]="15" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,15,20]"
