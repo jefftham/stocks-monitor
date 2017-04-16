@@ -15,7 +15,7 @@ export class StockDataService {
     savePurchasedStockList(purchasedStockList: Stock[]) {
         return this.http.put(this.purchasedDB, purchasedStockList)
             .subscribe(
-            (res: Response) => { console.log('purchasedStockList is saved.'); console.log('purchasedStockList saved: ', purchasedStockList) },
+            (res: Response) => { console.log('purchasedStockList is saved.'); },
             (error: Response) => { console.log(error); console.log('purchasedStockList that going to save : ', purchasedStockList) }
             );
     }

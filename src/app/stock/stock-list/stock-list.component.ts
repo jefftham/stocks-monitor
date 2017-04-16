@@ -159,6 +159,32 @@ export class StockListComponent implements OnInit, OnDestroy {
     }
   }
 
+  // https://github.com/primefaces/primeng/issues/2535
+  onEditComplete() {
+    // save the stock list
+    console.log('onEditComplete()')
+    this.onSavePurchase();
+    this.onSaveFavorite();
+  }
+
+  onEditInit() {
+    // Since onEditComplete Event only trigger when user hit  Enter on keyboard,
+    // this function will  set a timer to set the data.
+
+    let runCount = 0;
+
+    const timerId = setInterval(
+      () => {
+        runCount++;
+        if (runCount > 3) clearInterval(timerId);
+
+        console.log('onEdit saving');
+        this.onSavePurchase();
+        this.onSaveFavorite();
+      }
+      , 10 * 1000);    // 10 seconds
+  }
+
   onDebug() {
     console.log('purchasedStockList: ', this.purchasedStockList);
     console.log('selectedStock :', this.selectedStock);

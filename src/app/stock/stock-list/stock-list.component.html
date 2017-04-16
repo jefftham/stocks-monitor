@@ -5,7 +5,8 @@
 <!-- Prime Ng Data Table for Purchased Stock List-->
 <div>
   <p-dataTable [(value)]="purchasedStockList" [editable]="true" [rows]="15" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,15,20]"
-    [responsive]="true" sortMode="multiple" resizableColumns="true" reorderableColumns="true" expandableRows="true">
+    [responsive]="true" sortMode="multiple" resizableColumns="true" reorderableColumns="true" expandableRows="true" (onEditComplete)="onEditComplete()"
+    (onEditInit)="onEditInit()">
     <!--Header section-->
     <p-header>
       <h3>Purchased Stocks</h3>
@@ -55,7 +56,9 @@
           <button type="button" class="ui-button-success" pButton icon="fa-plus" (click)="onAddNewStock(newPurSymbol.value, 'purchasedStockList'); newPurSymbol.value='';"
             label="Add"> </button>
         </div>
+        <!--
         <div class="col-md-3" style="text-align: left"> <button pButton type="button" (click)=onSavePurchase() label="Save Purchase"></button></div>
+        -->
       </div>
     </p-footer>
   </p-dataTable>
@@ -67,7 +70,7 @@
 <!-- Prime Ng Data Table for Favorite Stock List-->
 <div>
   <p-dataTable [(value)]="favoriteStockList" [editable]="true" [rows]="15" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,15,20]"
-    [responsive]="true" sortMode="multiple" resizableColumns="true" reorderableColumns="true" expandableRows="true">
+    [responsive]="true" sortMode="multiple" resizableColumns="true" reorderableColumns="true" expandableRows="true" (onEditComplete)="onEditComplete()">
     <!--Header section-->
     <p-header>
       <h3>Favorite Stocks</h3>
@@ -81,7 +84,7 @@
           <button type="button" pButton icon="fa-arrow-up" (click)="onMoveStockTo(stock, 'purchasedStockList')"></button>
         </ng-template>
       </p-column>
-      <!-- Dynamically  list the columns based on the array of  purCols -->
+      <!-- Dynamically  list the columns based on the array of  favCols -->
       <p-column *ngFor="let col of favCols " [field]="col.field " [header]="col.header " [sortable]="true" [editable]="col.editable"></p-column>
     </div>
     <!-- The row expansion of each row-->
@@ -94,7 +97,9 @@
           <button type="button" class="ui-button-success" pButton icon="fa-plus" (click)="onAddNewStock(newFavSymbol.value, 'favoriteStockList'); newFavSymbol.value='';"
             label="Add"> </button>
         </div>
+        <!--
         <div class="col-md-3" style="text-align: left"> <button id="saveFavorite" pButton type="button " (click)=onSaveFavorite() label="Save Favorite"></button></div>
+        -->
       </div>
     </p-footer>
   </p-dataTable>
