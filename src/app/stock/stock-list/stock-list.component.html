@@ -13,10 +13,10 @@
     <div class="row">
 
       <p-column [style]="{'width':'100px', 'text-align':'right'}" expander="true" styleClass="col-icon">
-        <template let-stock="rowData" pTemplate type="body">
-          <button type="button" pButton icon="fa-times"></button>
+        <ng-template let-stock="rowData" pTemplate type="body">
+          <button type="button" pButton icon="fa-times" class="ui-button-danger" (click)="onDeleteStock(stock, 'purchasedStockList')"></button>
           <button type="button" pButton icon="fa-arrow-down"></button>
-        </template>
+        </ng-template>
       </p-column>
 
 
@@ -47,9 +47,9 @@
     <p-footer>
       <div class="ui-helper-clearfix row" style="width:100%">
         <div class="col-md-3" style="text-align: left">
-          <input pInputText id="newSymbol" [(ngModel)]="newStock.symbol" style="text-transform:uppercase" placeholder="Enter symbol"
+          <input type="text" pInputText id="newSymbol" [(ngModel)]="newStock.symbol" style="text-transform:uppercase" placeholder="Enter symbol"
           />
-          <button type="button" pButton icon="fa-plus" (click)="onAddPurchasedStock()" label="Add"> </button>
+          <button type="button" class="ui-button-success" pButton icon="fa-plus" (click)="onAddPurchasedStock()" label="Add"> </button>
         </div>
         <div class="col-md-3" style="text-align: left"> <button id="savePurchased" pButton type="button " (click)=onSavePurchase() label="Save Purchase"></button></div>
       </div>

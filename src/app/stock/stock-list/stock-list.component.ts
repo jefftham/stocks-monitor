@@ -22,6 +22,7 @@ export class StockListComponent implements OnInit, OnDestroy {
   subtitle = 'Stock List';
   purchasedStockList: Stock[] = [];
   favoriteStockList: Stock[] = [];
+  selectedStock: Stock;
   // newStock = { symbol: '', info: {} };
   newStock = new Stock('');
 
@@ -127,8 +128,27 @@ export class StockListComponent implements OnInit, OnDestroy {
     return added;
   }
 
+  onDeleteStock(stock: Stock, stockListName: string) {
+    console.log('on delete stock: ', stock);
+    let stockList;
+    if (stockListName === 'purchasedStockList') {
+      stockList = this.purchasedStockList;
+    } else if (stockListName === 'favoriteStockList') {
+      stockList = this.favoriteStockList;
+    } else {
+      console.log('onDeleteStock(): unknown stock list name ');
+    }
+
+    stockList.forEach((e, i, a) => {
+      if (e.symbol === stock.symbol) {
+        a.splice(i, 1);
+      }
+    });
+  }
+
   onDebug() {
     console.log('purchasedStockList: ', this.purchasedStockList);
+    console.log('selectedStock :', this.selectedStock);
   }
 
   onSavePurchase() {
