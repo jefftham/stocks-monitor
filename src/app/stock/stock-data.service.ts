@@ -22,7 +22,7 @@ export class StockDataService {
             },
             (error: Response) => {
                 console.log(error);
-                console.log('purchasedStockList that going to save : ', purchasedStockList)
+                console.log('purchasedStockList that going to save : ', purchasedStockList);
                 this.messageService.inbox.next(this.messageService.send('error', 'Purchased Stocks is not saved.'));
             }
             );
@@ -34,7 +34,7 @@ export class StockDataService {
             (res: Response) => this.messageService.inbox.next(this.messageService.send('success', 'Favorite Stocks saved.')),
             (error: Response) => {
                 console.log(error);
-                console.log('favoriteStockList that going to save : ', favoriteStockList)
+                console.log('favoriteStockList that going to save : ', favoriteStockList);
                 this.messageService.inbox.next(this.messageService.send('error', 'Favorite Stocks is not saved.'));
             }
             );

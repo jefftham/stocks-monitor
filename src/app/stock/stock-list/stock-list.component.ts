@@ -125,7 +125,7 @@ export class StockListComponent implements OnInit, OnDestroy {
 
 
   stockAdded(symbol: string, target: Stock[]) {
-    let added: boolean = false;
+    let added = false;
     target.forEach((e, i, a) => {
       if (e.symbol === symbol) {
         added = true;
@@ -186,7 +186,7 @@ export class StockListComponent implements OnInit, OnDestroy {
     const timerId = setInterval(
       () => {
         runCount++;
-        if (runCount > 3) clearInterval(timerId);
+        if (runCount > 3) { clearInterval(timerId); }
 
         // console.log('onEdit saving');
         this.onSavePurchase();
