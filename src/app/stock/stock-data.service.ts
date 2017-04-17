@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Stock } from './stock.model';
 import 'rxjs/Rx';
+import { MessageService } from '../shared/message.service';
 
 
 // using Google Firebase to save  stock list
@@ -10,21 +11,32 @@ export class StockDataService {
     private purchasedDB = 'https://stocks-dd1e5.firebaseio.com/purchase.json';
     private favoriteDB = 'https://stocks-dd1e5.firebaseio.com/favorite.json';
 
-    constructor(private http: Http) { }
+    constructor(private http: Http, private messageService: MessageService) { }
 
     savePurchasedStockList(purchasedStockList: Stock[]) {
         return this.http.put(this.purchasedDB, purchasedStockList)
             .subscribe(
-            (res: Response) => { console.log('purchasedStockList is saved.'); },
-            (error: Response) => { console.log(error); console.log('purchasedStockList that going to save : ', purchasedStockList) }
+            (res: Response) => {
+                // console.log('purchasedStockList is saved.');
+                this.messageService.inbox.next(this.messageService.send('success', 'Purchased Stocks saved.'));
+            },
+            (error: Response) => {
+                console.log(error);
+                console.log('purchasedStockList that going to save : ', purchasedStockList)
+                this.messageService.inbox.next(this.messageService.send('error', 'Purchased Stocks is not saved.'));
+            }
             );
     }
 
     saveFavoriteStockList(favoriteStockList: Stock[]) {
         return this.http.put(this.favoriteDB, favoriteStockList)
             .subscribe(
-            (res: Response) => console.log('favoriteStockList is saved.'),
-            (error: Response) => console.log(error)
+            (res: Response) => this.messageService.inbox.next(this.messageService.send('success', 'Favorite Stocks saved.')),
+            (error: Response) => {
+                console.log(error);
+                console.log('favoriteStockList that going to save : ', favoriteStockList)
+                this.messageService.inbox.next(this.messageService.send('error', 'Favorite Stocks is not saved.'));
+            }
             );
     }
 

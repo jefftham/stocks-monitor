@@ -16,6 +16,8 @@ import { InputTextModule, DataTableModule, ButtonModule, DialogModule, MultiSele
 import { StockInfoService } from './stock/stock-info.service';
 import { MessageService } from './shared/message.service';
 import { FooterComponent } from './footer/footer.component';
+import { NgPipesModule } from 'ngx-pipes';
+
 
 @NgModule({
   declarations: [
@@ -26,7 +28,7 @@ import { FooterComponent } from './footer/footer.component';
     StockItemComponent,
     SuggestStocksComponent,
     StockStartComponent,
-    FooterComponent
+    FooterComponent,
 
   ],
   imports: [
@@ -34,6 +36,8 @@ import { FooterComponent } from './footer/footer.component';
     FormsModule,
     HttpModule,
     AppRoutingModule,
+
+    NgPipesModule,
 
     InputTextModule,
     DataTableModule,

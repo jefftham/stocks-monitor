@@ -49,7 +49,7 @@ export class StockListComponent implements OnInit, OnDestroy {
     this.stockDataService.getPurchasedStockList().subscribe(
       (data: any[]) => {
         this.purchasedStockList = data;
-        console.log('purchased stocks: ', this.purchasedStockList);
+        // console.log('purchased stocks: ', this.purchasedStockList);
         // this.stockDataService.savePurchasedStockList(this.purchasedStockList);
         // get stock live data
         for (const stock of this.purchasedStockList) {
@@ -71,7 +71,7 @@ export class StockListComponent implements OnInit, OnDestroy {
     this.stockDataService.getFavoriteStockList().subscribe(
       (data: any[]) => {
         this.favoriteStockList = data;
-        console.log('favarite stocks: ', this.favoriteStockList);
+        // console.log('favarite stocks: ', this.favoriteStockList);
         // this.stockDataService.saveFavoriteStockList(this.favoriteStockList);
         // get stock live data
         for (const stock of this.favoriteStockList) {
@@ -102,9 +102,11 @@ export class StockListComponent implements OnInit, OnDestroy {
     const stockList: Stock[] = this.stringToStockList(stockListName);
 
     if (symbol === '') {
-      console.log('empty stock symbol.');
+      // console.log('empty stock symbol.');
+      this.messageService.inbox.next(this.messageService.send('error', 'Please enter a stock symbol.'));
     } else if (this.stockAdded(symbol, stockList)) {
-      console.log(symbol + ' is added.');
+      // console.log(symbol + ' is added.');
+      this.messageService.inbox.next(this.messageService.send('error', symbol + ' is added.'));
     } else {
       stockList.push(new Stock(symbol));
 
@@ -133,7 +135,7 @@ export class StockListComponent implements OnInit, OnDestroy {
   }
 
   onDeleteStock(stock: Stock, stockListName: string) {
-    console.log('on delete stock: ', stock);
+    // console.log('on delete stock: ', stock);
     const stockList: Stock[] = this.stringToStockList(stockListName);
 
     stockList.forEach((e, i, a) => {
@@ -148,7 +150,8 @@ export class StockListComponent implements OnInit, OnDestroy {
   }
 
   onMoveStockTo(stock: Stock, stockListName: string) {
-    console.log('on move stock: ', stock);
+    // console.log('on move stock: ', stock);
+    this.messageService.inbox.next(this.messageService.send('success', stock.symbol + ' is moved.'));
     const stockList: Stock[] = this.stringToStockList(stockListName);
 
     stockList.push(stock);
@@ -162,14 +165,14 @@ export class StockListComponent implements OnInit, OnDestroy {
     switch (stockListName) {
       case 'purchasedStockList': return this.purchasedStockList;
       case 'favoriteStockList': return this.favoriteStockList;
-      default: console.log('unknown stock list name.');
+      default: console.error('unknown stock list name.');
     }
   }
 
   // https://github.com/primefaces/primeng/issues/2535
   onEditComplete() {
     // save the stock list
-    console.log('onEditComplete()')
+    // console.log('onEditComplete()')
     this.onSavePurchase();
     this.onSaveFavorite();
   }
@@ -185,7 +188,7 @@ export class StockListComponent implements OnInit, OnDestroy {
         runCount++;
         if (runCount > 3) clearInterval(timerId);
 
-        console.log('onEdit saving');
+        // console.log('onEdit saving');
         this.onSavePurchase();
         this.onSaveFavorite();
       }
@@ -217,18 +220,24 @@ export class StockListComponent implements OnInit, OnDestroy {
   // modify by reference
   // update the stock list from database
   updateStockDetail(symbol: string, info: object, target: Stock[]) {
-    console.log('passed symbol is ' + symbol);
+    // console.log('passed symbol is ' + symbol);
 
     target.forEach((stock, index, thisArray) => {
       if (stock.symbol === symbol) {
-        console.log('updateStockDetail is updating: ', stock.symbol)
+        // console.log('updateStockDetail is updating: ', stock.symbol)
         stock['info'] = info;
         const statusTodayPercentage = ((stock.info['close'] - stock.info['open']) / stock.info['open'] * 100).toFixed(2);
         stock.info['status'] = statusTodayPercentage + '%';
       }
     });
-    console.log('updated stocks : ', target);
+    // console.log('updated stocks : ', target);
   }
 
 
 }
+
+
+
+// TODO
+// improvement:  deleted stock is not removed from subscriptions
+// improvement:  stock added in fav list can be added to pur list and move to fav later.

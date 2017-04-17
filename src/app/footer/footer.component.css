@@ -1,8 +1,16 @@
 .ui-growl {
   position: fixed;
-  top: 80%;
+  top: 100%;
   left: 70%;
   width: 360px;
-  height: 80px;
+  height: 0px;
   z-index: auto;
+}
+
+.ui-growl-item-container {
+  position: relative;
+  /*margin: -170px 0 0 0;*/
+  margin: -95px 0 0 0;
+  opacity: 0.70;
+  filter: alpha(opacity=70);
 }
