@@ -27,7 +27,7 @@
         </ng-template>
       </p-column>
       <!-- Dynamically  list the columns based on the array of  purCols -->
-      <p-column *ngFor="let col of purCols" [field]="col.field" [header]="col.header" [sortable]="true" [editable]="col.editable"></p-column>
+      <p-column *ngFor="let col of purCols" [field]="col.field" [header]="col.header" [sortable]="col.sortable" [editable]="col.editable"></p-column>
     </div>
 
     <!-- The row expansion of each row-->

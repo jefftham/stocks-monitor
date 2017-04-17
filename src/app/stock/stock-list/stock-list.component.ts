@@ -222,6 +222,7 @@ export class StockListComponent implements OnInit, OnDestroy {
   updateStockDetail(symbol: string, info: object, target: Stock[]) {
     // console.log('passed symbol is ' + symbol);
 
+
     target.forEach((stock, index, thisArray) => {
       if (stock.symbol === symbol) {
         // console.log('updateStockDetail is updating: ', stock.symbol)
@@ -234,14 +235,27 @@ export class StockListComponent implements OnInit, OnDestroy {
           const diff = parseFloat(stock['info']['close']) - parseFloat(stock['purchasedPrice']);
           const profit = diff * parseFloat(stock['purchasedUnit']);
           const percentage = diff / parseFloat(stock['purchasedPrice']) * 100;
-          stock['profit'] = profit.toFixed(2);
-          stock['percentage'] = percentage.toFixed(2) + '%';
+          stock['profit'] = parseFloat(profit.toFixed(2));
+          stock['percentage'] = parseFloat(percentage.toFixed(2));
+        } else {
+          stock['profit'] = null;
+          stock['percentage'] = null;
+        }
 
 
-
+        // signal
+        if (stock['avg']) {
+          const diff = parseFloat(stock['avg']) - parseFloat(stock['info']['close']);
+          const percentage = diff / parseFloat(stock['info']['close']) * 100;
+          stock['signal'] = parseFloat(percentage.toFixed(2));
         }
 
       }
+
+      // convert string input to number
+      stock['avg'] = stock['avg'] ? parseFloat(stock['avg']) : null;
+      stock['purchasedPrice'] = stock['purchasedPrice'] ? parseFloat(stock['purchasedPrice']) : null;
+      stock['purchasedUnit'] = stock['purchasedUnit'] ? parseInt(stock['purchasedUnit'], 10) : null;
     });
     // console.log('updated stocks : ', target);
   }
