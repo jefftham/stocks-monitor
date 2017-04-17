@@ -7,14 +7,14 @@ export class StockTableConf {
         { field: 'info.close', header: 'Close', sortable: false },
         { field: 'info.status', header: 'Inc/Dec', sortable: true },
         // { field: 'info.Volume', header: 'Volume' }
-        { field: 'avg', header: 'Avg', sortable: true, 'editable': true },
+        { field: 'avg', header: 'Avg', sortable: true, 'editable': true, styleClass: 'editable-field' },
         { field: 'signal', header: 'Signal %', sortable: true, 'editable': false },
     ];
 
     static purCols: any[] = [
         ...StockTableConf.commCols,
-        { field: 'purchasedPrice', header: 'Purchased', sortable: true, 'editable': true },
-        { field: 'purchasedUnit', header: 'Unit', sortable: true, 'editable': true },
+        { field: 'purchasedPrice', header: 'Purchased', sortable: true, 'editable': true, styleClass: 'editable-field' },
+        { field: 'purchasedUnit', header: 'Unit', sortable: true, 'editable': true, styleClass: 'editable-field' },
         { field: 'profit', header: 'Gain/Loss', sortable: true, 'editable': false },
         { field: 'percentage', header: 'Gain/Loss %', sortable: true, 'editable': false },
 

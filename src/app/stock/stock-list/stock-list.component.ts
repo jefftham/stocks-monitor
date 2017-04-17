@@ -17,7 +17,7 @@ import { MessageService } from '../../shared/message.service';
   selector: 'app-stock-list',
   templateUrl: './stock-list.component.html',
   styleUrls: ['./stock-list.component.css'],
-  // encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None,
 })
 export class StockListComponent implements OnInit, OnDestroy {
   subtitle = 'Stock List';
