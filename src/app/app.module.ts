@@ -17,6 +17,8 @@ import { StockInfoService } from './stock/stock-info.service';
 import { MessageService } from './shared/message.service';
 import { FooterComponent } from './footer/footer.component';
 import { NgPipesModule } from 'ngx-pipes';
+import { CustomBooleanDirective } from './shared/custom-boolean.directive';
+
 
 
 @NgModule({
@@ -29,6 +31,7 @@ import { NgPipesModule } from 'ngx-pipes';
     SuggestStocksComponent,
     StockStartComponent,
     FooterComponent,
+    CustomBooleanDirective,
 
   ],
   imports: [

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation, ViewChild } from '@angular/core';
 import { Stock } from '../stock.model';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -11,6 +11,7 @@ import { StockTableConf } from '../stock-table.conf';
 import { StockInfoService } from '../stock-info.service';
 import { StockDataService } from '../stock-data.service';
 import { MessageService } from '../../shared/message.service';
+import { CustomBooleanDirective } from '../../shared/custom-boolean.directive';
 
 
 @Component({
@@ -32,6 +33,7 @@ export class StockListComponent implements OnInit, OnDestroy {
   // columns
   purCols: any[] = StockTableConf['purCols'];
   favCols: any[] = StockTableConf['favCols'];
+  @ViewChild('customBoolean') customBoolean: CustomBooleanDirective;
   // purColsOptions: SelectItem[] = [];
 
   constructor(private stockInfoService: StockInfoService,
@@ -109,6 +111,9 @@ export class StockListComponent implements OnInit, OnDestroy {
       this.messageService.inbox.next(this.messageService.send('error', symbol + ' is added.'));
     } else {
       stockList.push(new Stock(symbol));
+      // save the stock list
+      this.onSavePurchase();
+      this.onSaveFavorite();
 
       const newObserver = this.stockInfoService.getLiveStockInfo(symbol)
         .subscribe(
@@ -226,15 +231,21 @@ export class StockListComponent implements OnInit, OnDestroy {
     target.forEach((stock, index, thisArray) => {
       if (stock.symbol === symbol) {
         // console.log('updateStockDetail is updating: ', stock.symbol)
-        stock['info'] = info;
-        const statusTodayPercentage = ((stock.info['close'] - stock.info['open']) / stock.info['open'] * 100).toFixed(2);
-        stock.info['status'] = statusTodayPercentage + '%';
+
+        // unpack info
+        const keys = Object.keys(info);
+        for (const key of keys) {
+          stock[key] = parseFloat(info[key]);
+        }
+
+        const statusTodayPercentage = parseFloat(((stock['close'] - stock['open']) / stock['open'] * 100).toFixed(2));
+        stock['status'] = statusTodayPercentage;
 
         // calculate the profit
         if (stock['purchasedPrice'] && stock['purchasedUnit']) {
-          const diff = parseFloat(stock['info']['close']) - parseFloat(stock['purchasedPrice']);
-          const profit = diff * parseFloat(stock['purchasedUnit']);
-          const percentage = diff / parseFloat(stock['purchasedPrice']) * 100;
+          const diff = (stock['close']) - (stock['purchasedPrice']);
+          const profit = diff * (stock['purchasedUnit']);
+          const percentage = diff / (stock['purchasedPrice']) * 100;
           stock['profit'] = parseFloat(profit.toFixed(2));
           stock['percentage'] = parseFloat(percentage.toFixed(2));
         } else {
@@ -245,8 +256,8 @@ export class StockListComponent implements OnInit, OnDestroy {
 
         // signal
         if (stock['avg']) {
-          const diff = parseFloat(stock['avg']) - parseFloat(stock['info']['close']);
-          const percentage = diff / parseFloat(stock['info']['close']) * 100;
+          const diff = (stock['avg']) - (stock['close']);
+          const percentage = diff / (stock['close']) * 100;
           stock['signal'] = parseFloat(percentage.toFixed(2));
         }
 

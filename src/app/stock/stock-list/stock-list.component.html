@@ -28,7 +28,18 @@
       </p-column>
       <!-- Dynamically  list the columns based on the array of  purCols -->
       <p-column *ngFor="let col of purCols" [field]="col.field" [header]="col.header" [sortable]="col.sortable" [editable]="col.editable"
-        [styleClass]="col.styleClass"></p-column>
+        [styleClass]="col.styleClass" [customBoolean]="col.custom">
+        <ng-template pTemplate let-col let-row="rowData">
+          <span *ngIf="customBoolean; else normal ">{{row[col.field]}} T</span>
+          <ng-template #normal><span>{{row[col.field]}}</span></ng-template>
+        </ng-template>
+      </p-column>
+
+      <p-column field="profit" header="test" sortable="true" editable="true">
+        <ng-template pTemplate let-col let-row="rowData">
+          <span [ngStyle]="{'color': row[col.field] > 0 ? 'green': 'red'}">{{row[col.field]}}</span>
+        </ng-template>
+      </p-column>
     </div>
 
     <!-- The row expansion of each row-->
