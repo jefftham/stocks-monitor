@@ -80,7 +80,7 @@
     <!-- Define the columns of the table-->
     <div class="row">
       <!-- First column of the table - list all the actions -->
-      <p-column [style]="{'width':'100px', 'text-align':'right'}" expander="true" styleClass="col-icon">
+      <p-column [style]="{'width':'100px', 'text-align':'center'}" expander="true" styleClass="col-icon" header="Actions">
         <ng-template let-stock="rowData" pTemplate type="body">
           <button type="button" pButton icon="fa-times" class="ui-button-danger" (click)="onDeleteStock(stock, 'favoriteStockList')"></button>
           <button type="button" pButton icon="fa-arrow-up" (click)="onMoveStockTo(stock, 'purchasedStockList')"></button>

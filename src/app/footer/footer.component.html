@@ -1,3 +1,4 @@
-<footer>
-  <p-growl [value]="msgs"></p-growl>
+<footer class="ui-g">
+  <div id="notify-button"> <button type="button" pButton class="ui-button-secondary" (click)="onToggleNofitication()" label="Nottification: {{onOff}}"></button></div>
+  <p-growl [value]="msgs" [hidden]="!notify"></p-growl>
 </footer>

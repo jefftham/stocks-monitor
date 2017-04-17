@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Input } from '@angular/core';
 import { Message } from 'primeng/primeng';
 import { MessageService } from '../shared/message.service';
 
@@ -11,6 +11,8 @@ import { MessageService } from '../shared/message.service';
 export class FooterComponent implements OnInit {
 
   msgs: Message[] = [];
+  notify = false;
+  onOff = this.notify ? 'On' : 'Off';
 
   constructor(private messageService: MessageService) { }
 
@@ -21,6 +23,11 @@ export class FooterComponent implements OnInit {
         this.msgs.push(msg);
       }
       );
+  }
+
+  onToggleNofitication() {
+    this.notify = !this.notify;
+    this.onOff = this.notify ? 'On' : 'Off';
   }
 
 }

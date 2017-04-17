@@ -14,3 +14,10 @@
   opacity: 0.70;
   filter: alpha(opacity=70);
 }
+
+#notify-button {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 155px;
+}

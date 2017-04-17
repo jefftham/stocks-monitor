@@ -228,6 +228,19 @@ export class StockListComponent implements OnInit, OnDestroy {
         stock['info'] = info;
         const statusTodayPercentage = ((stock.info['close'] - stock.info['open']) / stock.info['open'] * 100).toFixed(2);
         stock.info['status'] = statusTodayPercentage + '%';
+
+        // calculate the profit
+        if (stock['purchasedPrice'] && stock['purchasedUnit']) {
+          const diff = parseFloat(stock['info']['close']) - parseFloat(stock['purchasedPrice']);
+          const profit = diff * parseFloat(stock['purchasedUnit']);
+          const percentage = diff / parseFloat(stock['purchasedPrice']) * 100;
+          stock['profit'] = profit.toFixed(2);
+          stock['percentage'] = percentage.toFixed(2) + '%';
+
+
+
+        }
+
       }
     });
     // console.log('updated stocks : ', target);
