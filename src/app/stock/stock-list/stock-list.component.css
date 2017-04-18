@@ -1,3 +1,4 @@
 .editable-field {
-  text-decoration: underline;
+  /*text-decoration: underline;*/
+  color: purple;
 }

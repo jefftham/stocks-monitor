@@ -11,7 +11,6 @@ import { StockTableConf } from '../stock-table.conf';
 import { StockInfoService } from '../stock-info.service';
 import { StockDataService } from '../stock-data.service';
 import { MessageService } from '../../shared/message.service';
-import { CustomBooleanDirective } from '../../shared/custom-boolean.directive';
 
 
 @Component({
@@ -33,7 +32,6 @@ export class StockListComponent implements OnInit, OnDestroy {
   // columns
   purCols: any[] = StockTableConf['purCols'];
   favCols: any[] = StockTableConf['favCols'];
-  @ViewChild('customBoolean') customBoolean: CustomBooleanDirective;
   // purColsOptions: SelectItem[] = [];
 
   constructor(private stockInfoService: StockInfoService,

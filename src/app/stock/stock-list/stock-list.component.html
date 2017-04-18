@@ -6,8 +6,8 @@
 <!-- Prime Ng Data Table for Purchased Stock List-->
 <div>
   <p-dataTable [(value)]="purchasedStockList" [editable]="true" [rows]="15" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,15,20]"
-    [responsive]="true" sortMode="multiple" resizableColumns="true" reorderableColumns="true" expandableRows="true" (onEditComplete)="onEditComplete()"
-    (onEditInit)="onEditInit()">
+    [responsive]="true" sortField="status" [sortOrder]="-1" resizableColumns="true" reorderableColumns="true" expandableRows="true"
+    (onEditComplete)="onEditComplete()" (onEditInit)="onEditInit()">
     <!--Header section-->
     <p-header>
       <h3>Purchased Stocks</h3>
@@ -28,9 +28,10 @@
       </p-column>
       <!-- Dynamically  list the columns based on the array of  purCols -->
       <p-column *ngFor="let col of purCols" [field]="col.field" [header]="col.header" [sortable]="col.sortable" [editable]="col.editable"
-        [styleClass]="col.styleClass" [customBoolean]="col.custom">
+        [styleClass]="col.styleClass">
         <ng-template pTemplate let-col let-row="rowData">
-          <span *ngIf="customBoolean; else normal ">{{row[col.field]}} T</span>
+          <span *ngIf="col.field == 'status' || col.field == 'signal' || col.field == 'profit' || col.field == 'percentage'  ; else normal "
+            [ngStyle]="{'color': row[col.field] > 0 ? 'green': 'red'}">{{row[col.field]}}</span>
           <ng-template #normal><span>{{row[col.field]}}</span></ng-template>
         </ng-template>
       </p-column>
@@ -82,8 +83,8 @@
 <!-- Prime Ng Data Table for Favorite Stock List-->
 <div>
   <p-dataTable [(value)]="favoriteStockList" [editable]="true" [rows]="15" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,15,20]"
-    [responsive]="true" sortMode="multiple" resizableColumns="true" reorderableColumns="true" expandableRows="true" (onEditComplete)="onEditComplete()"
-    (onEditInit)="onEditInit()">
+    [responsive]="true" sortField="status" [sortOrder]="-1" resizableColumns="true" reorderableColumns="true" expandableRows="true"
+    (onEditComplete)="onEditComplete()" (onEditInit)="onEditInit()">
     <!--Header section-->
     <p-header>
       <h3>Favorite Stocks</h3>
@@ -98,10 +99,34 @@
         </ng-template>
       </p-column>
       <!-- Dynamically  list the columns based on the array of  favCols -->
-      <p-column *ngFor="let col of favCols " [field]="col.field " [header]="col.header " [sortable]="true" [editable]="col.editable"></p-column>
+      <!--<p-column *ngFor="let col of favCols " [field]="col.field " [header]="col.header " [sortable]="true" [editable]="col.editable"></p-column>-->
+      <p-column *ngFor="let col of favCols" [field]="col.field" [header]="col.header" [sortable]="col.sortable" [editable]="col.editable"
+        [styleClass]="col.styleClass">
+        <ng-template pTemplate let-col let-row="rowData">
+          <span *ngIf="col.field == 'status' || col.field == 'signal' || col.field == 'profit' || col.field == 'percentage'  ; else normal "
+            [ngStyle]="{'color': row[col.field] > 0 ? 'green': 'red'}">{{row[col.field]}}</span>
+          <ng-template #normal><span>{{row[col.field]}}</span></ng-template>
+        </ng-template>
+      </p-column>
     </div>
     <!-- The row expansion of each row-->
-    <ng-template let-stock pTemplate="rowexpansion"></ng-template>
+    <ng-template let-stock pTemplate="rowexpansion">
+      <div class="ui-grid ui-grid-responsive ui-fluid" style="font-size:16px;padding:20px">
+        <div class="ui-grid-row">
+          <div class="ui-grid-col-3" style="text-align:center">
+
+          </div>
+          <div class="ui-grid-col-9">
+            <div class="ui-grid ui-grid-responsive ui-grid-pad">
+              <div class="ui-grid-row">
+                <div class="ui-grid-col-2 label">Symbol: </div>
+                <div class="ui-grid-col-10">{{stock.symbol}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
     <!-- Footer section-->
     <p-footer>
       <div class="ui-helper-clearfix row" style="width:100%">
