@@ -253,10 +253,12 @@ export class StockListComponent implements OnInit, OnDestroy {
 
 
         // signal
-        if (stock['avg']) {
+        if (stock['avg'] && !isNaN(stock['avg'])) {
           const diff = (stock['avg']) - (stock['close']);
           const percentage = diff / (stock['close']) * 100;
           stock['signal'] = parseFloat(percentage.toFixed(2));
+        }else{
+           stock['signal'] = null;
         }
 
       }
