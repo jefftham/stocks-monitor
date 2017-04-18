@@ -30,11 +30,15 @@
       <p-column *ngFor="let col of purCols" [field]="col.field" [header]="col.header" [sortable]="col.sortable" [editable]="col.editable"
         [styleClass]="col.styleClass">
         <ng-template pTemplate let-col let-row="rowData">
-          <span *ngIf="col.field == 'status' || col.field == 'signal' || col.field == 'percentage'  ; else colProfit " [ngStyle]="{'color': row[col.field] > 0 ? 'green': 'red'}">{{row[col.field]}}<span *ngIf="row[col.field]"> %</span></span>
-          <ng-template #colProfit> 
-            <span *ngIf="col.field == 'profit' ; else normal"[ngStyle]="{'color': row[col.field] > 0 ? 'green': 'red'}">{{row[col.field]}}</span>
-            <ng-template #normal><span>{{row[col.field]}} </span> </ng-template>
+          <input *ngIf="col.field == 'avg' || col.field == 'purchasedPrice' || col.field == 'purchasedUnit'; else colOther " type="number"
+            pInputText [(ngModel)]="row[col.field]" />
+          <ng-template #colOther>
+            <span *ngIf="col.field == 'status' || col.field == 'signal' || col.field == 'percentage'  ; else colProfit " [ngStyle]="{'color': row[col.field] > 0 ? 'green': 'red'}">{{row[col.field]}}<span *ngIf="row[col.field]"> %</span></span>
+            <ng-template #colProfit>
+              <span *ngIf="col.field == 'profit' ; else normal" [ngStyle]="{'color': row[col.field] > 0 ? 'green': 'red'}">{{row[col.field]}}</span>
+              <ng-template #normal><span>{{row[col.field]}} </span> </ng-template>
             </ng-template>
+          </ng-template>
         </ng-template>
       </p-column>
       <!--
@@ -106,9 +110,12 @@
       <p-column *ngFor="let col of favCols" [field]="col.field" [header]="col.header" [sortable]="col.sortable" [editable]="col.editable"
         [styleClass]="col.styleClass">
         <ng-template pTemplate let-col let-row="rowData">
-          <span *ngIf="col.field == 'status' || col.field == 'signal' ; else normal "
-            [ngStyle]="{'color': row[col.field] > 0 ? 'green': 'red'}">{{row[col.field]}}<span *ngIf="row[col.field]"> %</span></span>
-          <ng-template #normal><span>{{row[col.field]}}</span></ng-template>
+          <input *ngIf="col.field == 'avg' || col.field == 'purchasedPrice' || col.field == 'purchasedUnit'; else colOther " type="number"
+            pInputText [(ngModel)]="row[col.field]" />
+          <ng-template #colOther>
+            <span *ngIf="col.field == 'status' || col.field == 'signal' ; else normal " [ngStyle]="{'color': row[col.field] > 0 ? 'green': 'red'}">{{row[col.field]}}<span *ngIf="row[col.field]"> %</span></span>
+            <ng-template #normal><span>{{row[col.field]}}</span></ng-template>
+          </ng-template>
         </ng-template>
       </p-column>
     </div>
