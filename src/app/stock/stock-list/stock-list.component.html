@@ -90,9 +90,9 @@
 
 <!-- Prime Ng Data Table for Favorite Stock List-->
 <div>
-  <p-dataTable [rowStyleClass]="ui-g-12  " [(value)]="favoriteStockList" [editable]="true" [rows]="15" [paginator]="true" [pageLinks]="5"
-    [rowsPerPageOptions]="[5,10,15,20]" [responsive]="true" sortField="status" [sortOrder]="-1" resizableColumns="true" reorderableColumns="true"
-    expandableRows="true" (onEditComplete)="onEditComplete()" (onEditInit)="onEditInit()">
+  <p-dataTable [(value)]="favoriteStockList" [editable]="true" [rows]="15" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,15,20]"
+    [responsive]="true" sortField="status" [sortOrder]="-1" resizableColumns="true" reorderableColumns="true" expandableRows="true"
+    (onEditComplete)="onEditComplete()" (onEditInit)="onEditInit()">
     <!--Header section-->
     <p-header>
       <h3>Favorite Stocks</h3>
