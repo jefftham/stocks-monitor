@@ -9,10 +9,7 @@ import { MessageService } from '../shared/message.service';
 
 // const api = 'https://www.alphavantage.co/query?function=';
 const api = '/api/';
-const report = 'TIME_SERIES_DAILY';
-// const report = 'TIME_SERIES_INTRADAY';
-const outputsize = 'compact';
-// const outputsize = 'full';  // or 'compact'
+
 const apiKey = 1537;
 // const headers = new Headers({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
 
@@ -55,6 +52,11 @@ export class StockInfoService {
 
     // CORS error occurred here, maybe the  stock api is not a modern CORS  API. use  proxy or route traffic from own server
     getLiveStockInfo(symbol: string) {
+        const report = 'TIME_SERIES_DAILY';
+        // const report = 'TIME_SERIES_INTRADAY';
+
+        const outputsize = 'compact';
+        // const outputsize = 'full';  // or 'compact'
 
         const url = api + report + '&symbol=' + symbol + '&outputsize=' + outputsize + '&interval=1min&apikey=' + apiKey;
         // console.log(url);
@@ -82,7 +84,56 @@ export class StockInfoService {
             )
             .catch(
             (error: Response) => {
-                return Observable.throw('Unable to get live stock data.');
+                return Observable.throw('Unable to get live stock info.');
+
+            }
+            )
+        );
+    }
+
+    getStockAnalysis(report: string, symbol: string, days: number = 50, series_type: string = 'close') {
+        // http://www.alphavantage.co/query?function=SMA&symbol=F&interval=daily&time_period=50&series_type=close&apikey=1537
+
+        const url = api + report + '&symbol=' + symbol + '&interval=daily&time_period=' + days +
+            '&series_type=' + series_type + '&apikey=' + apiKey;
+
+        let meta = '';
+        switch (report.toUpperCase()) {
+            case 'SMA': meta = 'Technical Analysis: SMA'; break;
+            case 'EMA': meta = 'Technical Analysis: EMA'; break;
+            default: console.error('Unknown report for getStockAnalysis() ');
+        }
+
+        // console.log(url);
+        // return this.http.get(url, { headers: headers })
+        //  return this.http.get(url)
+        return Observable.timer(0, 1000 * 60 * 60).flatMap(() => this.http.get(url)
+            .map(
+            (res: Response) => {
+                // console.log(res);
+                let data = res.json();
+                //  console.log(data);
+
+                // parse data, just return the latest Technical Analysis:
+                data = data[meta][Object.keys(data[meta])[0]];
+                // console.log('trim: ', data);
+
+                // change the data key with stockEnum
+                const newData = {};
+
+                // tslint:disable-next-line:forin
+                for (const key in data) {
+                    newData[key.toLowerCase()] = parseFloat(data[key]).toFixed(2);
+                }
+
+                // console.log(report + ' ', newData);
+                // this.messageService.inbox.next(this.messageService.send('info', 'Stock Analysis Update: ' + symbol));
+                return newData;
+            }
+            )
+            .catch(
+            (error: Response) => {
+                return Observable.throw('Unable to get analysis stock info.');
 
             }
             )

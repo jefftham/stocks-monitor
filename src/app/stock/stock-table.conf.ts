@@ -12,8 +12,12 @@ export class StockTableConf {
         { field: 'close', header: 'Close', sortable: false },
         { field: 'status', header: 'Inc/Dec %', sortable: true },
         // { field: 'info.Volume', header: 'Volume' }
-        { field: 'avg', header: 'Avg', sortable: true, 'editable': true, styleClass: 'editable-field' },
-        { field: 'signal', header: 'Signal %', sortable: true, 'editable': false },
+        { field: 'sma', header: 'SMA', sortable: true },
+        { field: 'sSignal', header: 'S Signal %', sortable: true, },
+        { field: 'ema', header: 'EMA', sortable: true },
+        { field: 'eSignal', header: 'E Signal %', sortable: true, },
+        // { field: 'avg', header: 'Avg', sortable: true, 'editable': true, styleClass: 'editable-field' },
+        // { field: 'signal', header: 'Signal %', sortable: true, 'editable': false },
     ];
 
     static purCols: any[] = [

@@ -53,6 +53,7 @@ export class StockListComponent implements OnInit, OnDestroy {
         // this.stockDataService.savePurchasedStockList(this.purchasedStockList);
         // get stock live data
         for (const stock of this.purchasedStockList) {
+          // Live
           const newObserver = this.stockInfoService.getLiveStockInfo(stock.symbol)
             .subscribe(
             (info: any) => {
@@ -60,8 +61,23 @@ export class StockListComponent implements OnInit, OnDestroy {
             }
             );
 
+          // SMA for pur
+          const newObserver2 = this.stockInfoService.getStockAnalysis('SMA', stock.symbol, 50, 'close')
+            .subscribe(
+            (info: any) => {
+              return this.updateAnalysis(stock.symbol, info, this.purchasedStockList);
+            }
+            );
+
+          // EMA for pur
+          const newObserver3 = this.stockInfoService.getStockAnalysis('EMA', stock.symbol, 50, 'close')
+            .subscribe(
+            (info: any) => {
+              return this.updateAnalysis(stock.symbol, info, this.purchasedStockList);
+            }
+            );
           // add to subscriptions, for destroy ithe observable when change component
-          this.subscriptions.push(newObserver);
+          this.subscriptions.push(newObserver, newObserver2, newObserver3);
         }
       },
       (error: Response) => console.log(error)
@@ -82,7 +98,22 @@ export class StockListComponent implements OnInit, OnDestroy {
             }
             );
 
-          this.subscriptions.push(newObserver);
+          // SMA for fav
+          const newObserver2 = this.stockInfoService.getStockAnalysis('SMA', stock.symbol, 50, 'close')
+            .subscribe(
+            (info: any) => {
+              return this.updateAnalysis(stock.symbol, info, this.favoriteStockList);
+            }
+            );
+          // EMA for fav
+          const newObserver3 = this.stockInfoService.getStockAnalysis('EMA', stock.symbol, 50, 'close')
+            .subscribe(
+            (info: any) => {
+              return this.updateAnalysis(stock.symbol, info, this.favoriteStockList);
+            }
+            );
+
+          this.subscriptions.push(newObserver, newObserver2, newObserver3);
         }
       },
       (error: Response) => console.log(error)
@@ -120,6 +151,22 @@ export class StockListComponent implements OnInit, OnDestroy {
           return this.updateStockDetail(symbol, info, stockList);
         }
         );
+
+      const newObserver2 = this.stockInfoService.getStockAnalysis('SMA', symbol, 50, 'close')
+        .subscribe(
+        (info: any) => {
+          // console.log('subscribe SMA: ', symbol + ' ', info);
+          return this.updateAnalysis(symbol, info, stockList);
+        }
+        );
+      const newObserver3 = this.stockInfoService.getStockAnalysis('EMA', symbol, 50, 'close')
+        .subscribe(
+        (info: any) => {
+          // console.log('subscribe SMA: ', symbol + ' ', info);
+          return this.updateAnalysis(symbol, info, stockList);
+        }
+        );
+
       // add to subscriptions, for destroy ithe observable when change component
       this.subscriptions.push(newObserver);
 
@@ -222,6 +269,12 @@ export class StockListComponent implements OnInit, OnDestroy {
 
   // modify by reference
   // update the stock list from database
+  updateAnalysis(symbol: string, info: object, target: Stock[]) {
+    this.updateStockDetail(symbol, info, target);
+  }
+
+  // modify by reference
+  // update the stock list from database
   updateStockDetail(symbol: string, info: object, target: Stock[]) {
     // console.log('passed symbol is ' + symbol);
 
@@ -252,19 +305,27 @@ export class StockListComponent implements OnInit, OnDestroy {
         }
 
 
-        // signal
-        if (stock['avg'] && !isNaN(stock['avg'])) {
-          const diff = (stock['avg']) - (stock['close']);
+        // sma - signal
+        if (stock['sma'] && !isNaN(stock['sma'])) {
+          const diff = (stock['sma']) - (stock['close']);
           const percentage = diff / (stock['close']) * 100;
-          stock['signal'] = parseFloat(percentage.toFixed(2));
-        }else{
-           stock['signal'] = null;
+          stock['sSignal'] = parseFloat(percentage.toFixed(2));
+        } else {
+          stock['sSignal'] = null;
+        }
+
+        // ema - signal
+        if (stock['ema'] && !isNaN(stock['ema'])) {
+          const diff = (stock['ema']) - (stock['close']);
+          const percentage = diff / (stock['close']) * 100;
+          stock['eSignal'] = parseFloat(percentage.toFixed(2));
+        } else {
+          stock['eSignal'] = null;
         }
 
       }
 
       // convert string input to number
-      stock['avg'] = stock['avg'] ? parseFloat(stock['avg']) : null;
       stock['purchasedPrice'] = stock['purchasedPrice'] ? parseFloat(stock['purchasedPrice']) : null;
       stock['purchasedUnit'] = stock['purchasedUnit'] ? parseInt(stock['purchasedUnit'], 10) : null;
     });
