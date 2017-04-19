@@ -36,8 +36,8 @@ export class StockListComponent implements OnInit, OnDestroy {
   favCols: any[] = StockTableConf['favCols'];
   // purColsOptions: SelectItem[] = [];
 
-  private smaValue = 50;
-  private emaValue = 50;
+  public smaValue = 50;
+  public emaValue = 50;
 
 
   constructor(private stockInfoService: StockInfoService,
