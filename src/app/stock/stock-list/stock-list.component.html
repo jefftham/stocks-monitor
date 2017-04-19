@@ -3,6 +3,32 @@
 <!--
   <button pButton type="button " (click)=onDebug() label="Show Detail in Console"></button>
 -->
+<div class="row">
+  <form class="form-horizontal">
+    <div class="col-md-2">
+      <div class="form-group">
+        <label class="control-label col-md-6" for="sma">SMA : </label>
+        <div class="col-md-6">
+          <input class="form-control" type="number" name="sma" id="sma" #sma [(ngModel)]="smaValue" placeholder="Days" (blur)="onSmaBlur()"
+            (keyup.enter)="onSmaBlur()" />
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="form-group">
+        <label class="control-label col-md-6" for="ema">EMA : </label>
+        <div class="col-md-6">
+          <input class="form-control" type="number" name="ema" id="ema" #ema [(ngModel)]="emaValue" placeholder="Days" (blur)="onEmaBlur()"
+            (keyup.enter)="onEmaBlur()" />
+        </div>
+      </div>
+    </div>
+
+  </form>
+
+
+</div>
+
 <!-- Prime Ng Data Table for Purchased Stock List-->
 <div>
   <p-dataTable [(value)]="purchasedStockList" [editable]="true" [rows]="15" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,15,20]"
@@ -29,6 +55,17 @@
       <!-- Dynamically  list the columns based on the array of  purCols -->
       <p-column *ngFor="let col of purCols" [field]="col.field" [header]="col.header" [sortable]="col.sortable" [editable]="col.editable"
         [styleClass]="col.styleClass">
+        <!--customized header-->
+        <ng-template let-col let-row="rowData" pTemplate type="header">
+          <span *ngIf="col.header == 'SMA'; else emaHeader">{{col.header}}-{{smaValue}}</span>
+          <ng-template #emaHeader>
+            <span *ngIf="col.header == 'EMA'; else otherHeader">{{col.header}}-{{emaValue}}</span>
+            <ng-template #otherHeader>
+              <span>{{col.header}}</span>
+            </ng-template>
+          </ng-template>
+        </ng-template>
+        <!--customized body-->
         <ng-template pTemplate let-col let-row="rowData">
           <input *ngIf="col.field == 'purchasedPrice' || col.field == 'purchasedUnit'; else colOther " type="number" pInputText [(ngModel)]="row[col.field]"
           />
@@ -110,6 +147,17 @@
       <!--<p-column *ngFor="let col of favCols " [field]="col.field " [header]="col.header " [sortable]="true" [editable]="col.editable"></p-column>-->
       <p-column *ngFor="let col of favCols" [field]="col.field" [header]="col.header" [sortable]="col.sortable" [editable]="col.editable"
         [styleClass]="col.styleClass">
+        <!--customized header-->
+        <ng-template let-col let-row="rowData" pTemplate type="header">
+          <span *ngIf="col.header == 'SMA'; else emaHeader">{{col.header}}-{{smaValue}}</span>
+          <ng-template #emaHeader>
+            <span *ngIf="col.header == 'EMA'; else otherHeader">{{col.header}}-{{emaValue}}</span>
+            <ng-template #otherHeader>
+              <span>{{col.header}}</span>
+            </ng-template>
+          </ng-template>
+        </ng-template>
+        <!--customized body-->
         <ng-template pTemplate let-col let-row="rowData">
           <input *ngIf="false; else colOther " type="number" pInputText [(ngModel)]="row[col.field]" />
           <ng-template #colOther>

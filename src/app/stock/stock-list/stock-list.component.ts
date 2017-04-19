@@ -27,6 +27,8 @@ export class StockListComponent implements OnInit, OnDestroy {
 
   // private ngUnsubscribe: Subject<void> = new Subject<void>();
   private subscriptions: Array<Subscription> = [];
+  private smaSubscriptions: Array<Subscription> = [];
+  private emaSubscriptions: Array<Subscription> = [];
 
   // the configuration for PrimeNg table
   // columns
@@ -103,21 +105,23 @@ export class StockListComponent implements OnInit, OnDestroy {
             );
 
           // SMA for fav
-          const newObserver2 = this.stockInfoService.getStockAnalysis('SMA', stock.symbol, this.smaValue, 'close')
+          const smaObserver = this.stockInfoService.getStockAnalysis('SMA', stock.symbol, this.smaValue, 'close')
             .subscribe(
             (info: any) => {
               return this.updateAnalysis(stock.symbol, info, this.favoriteStockList);
             }
             );
           // EMA for fav
-          const newObserver3 = this.stockInfoService.getStockAnalysis('EMA', stock.symbol, this.emaValue, 'close')
+          const emaObserver = this.stockInfoService.getStockAnalysis('EMA', stock.symbol, this.emaValue, 'close')
             .subscribe(
             (info: any) => {
               return this.updateAnalysis(stock.symbol, info, this.favoriteStockList);
             }
             );
 
-          this.subscriptions.push(newObserver, newObserver2, newObserver3);
+          this.subscriptions.push(newObserver);
+          this.smaSubscriptions.push(smaObserver);
+          this.emaSubscriptions.push(emaObserver);
         }
       },
       (error: Response) => console.log(error)
@@ -129,6 +133,75 @@ export class StockListComponent implements OnInit, OnDestroy {
         }*/
 
   }
+
+  onSmaBlur() {
+    console.log("onSmaBlur")
+    console.log(this.smaValue);
+
+    // unsbuscribe
+    for (const subs of this.smaSubscriptions) {
+      subs.unsubscribe();
+    }
+
+    // subscribe new analysis with new period
+    for (const stock of this.purchasedStockList) {
+      const smaObserver = this.stockInfoService.getStockAnalysis('SMA', stock.symbol, this.smaValue, 'close')
+        .subscribe(
+        (info: any) => {
+          // console.log('subscribe SMA: ', symbol + ' ', info);
+          return this.updateAnalysis(stock.symbol, info, this.purchasedStockList);
+        })
+
+      this.smaSubscriptions.push(smaObserver);
+    }
+
+    // subscribe new analysis with new period
+    for (const stock of this.favoriteStockList) {
+      const smaObserver = this.stockInfoService.getStockAnalysis('SMA', stock.symbol, this.smaValue, 'close')
+        .subscribe(
+        (info: any) => {
+          // console.log('subscribe SMA: ', symbol + ' ', info);
+          return this.updateAnalysis(stock.symbol, info, this.favoriteStockList);
+        })
+
+      this.smaSubscriptions.push(smaObserver);
+    }
+
+  }
+  onEmaBlur() {
+    console.log("onEmaBlur")
+    console.log(this.emaValue);
+
+    // unsbuscribe
+    for (const subs of this.emaSubscriptions) {
+      subs.unsubscribe();
+    }
+
+    // subscribe new analysis with new period
+    for (const stock of this.purchasedStockList) {
+      const emaObserver = this.stockInfoService.getStockAnalysis('EMA', stock.symbol, this.emaValue, 'close')
+        .subscribe(
+        (info: any) => {
+          // console.log('subscribe SMA: ', symbol + ' ', info);
+          return this.updateAnalysis(stock.symbol, info, this.purchasedStockList);
+        })
+
+      this.smaSubscriptions.push(emaObserver);
+    }
+
+    // subscribe new analysis with new period
+    for (const stock of this.favoriteStockList) {
+      const emaObserver = this.stockInfoService.getStockAnalysis('EMA', stock.symbol, this.emaValue, 'close')
+        .subscribe(
+        (info: any) => {
+          // console.log('subscribe SMA: ', symbol + ' ', info);
+          return this.updateAnalysis(stock.symbol, info, this.favoriteStockList);
+        })
+
+      this.smaSubscriptions.push(emaObserver);
+    }
+  }
+
 
   onAddNewStock(newSymbol: string, stockListName: string) {
     // console.log('newStock: ', this.newStock);
@@ -156,14 +229,14 @@ export class StockListComponent implements OnInit, OnDestroy {
         }
         );
 
-      const newObserver2 = this.stockInfoService.getStockAnalysis('SMA', symbol, this.smaValue, 'close')
+      const smaObserver = this.stockInfoService.getStockAnalysis('SMA', symbol, this.smaValue, 'close')
         .subscribe(
         (info: any) => {
           // console.log('subscribe SMA: ', symbol + ' ', info);
           return this.updateAnalysis(symbol, info, stockList);
         }
         );
-      const newObserver3 = this.stockInfoService.getStockAnalysis('EMA', symbol, this.emaValue, 'close')
+      const emaObserver = this.stockInfoService.getStockAnalysis('EMA', symbol, this.emaValue, 'close')
         .subscribe(
         (info: any) => {
           // console.log('subscribe SMA: ', symbol + ' ', info);
@@ -173,6 +246,8 @@ export class StockListComponent implements OnInit, OnDestroy {
 
       // add to subscriptions, for destroy ithe observable when change component
       this.subscriptions.push(newObserver);
+      this.smaSubscriptions.push(smaObserver);
+      this.emaSubscriptions.push(emaObserver);
 
     }
   }
@@ -267,6 +342,12 @@ export class StockListComponent implements OnInit, OnDestroy {
     //  this.ngUnsubscribe.complete();
 
     for (const subs of this.subscriptions) {
+      subs.unsubscribe();
+    }
+    for (const subs of this.smaSubscriptions) {
+      subs.unsubscribe();
+    }
+    for (const subs of this.emaSubscriptions) {
       subs.unsubscribe();
     }
   }
