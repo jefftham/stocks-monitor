@@ -80,6 +80,9 @@ if (process.env.NODE && ~process.env.NODE.indexOf("heroku")) {
   app.listen(process.env.PORT || 8080);
 
 } else {
-  console.log("app is running.")
-  server.listen(process.env.PORT || 8080);
+
+  server.listen(process.env.PORT || 4200);
+
+  console.log("Server running......")
+  console.log("http://localhost:" + server.address()['port'] + "/");
 }
