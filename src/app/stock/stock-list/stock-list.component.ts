@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation, ViewChild, Input } from '@angular/core';
 import { Stock } from '../stock.model';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -34,6 +34,10 @@ export class StockListComponent implements OnInit, OnDestroy {
   favCols: any[] = StockTableConf['favCols'];
   // purColsOptions: SelectItem[] = [];
 
+  private smaValue = 50;
+  private emaValue = 50;
+
+
   constructor(private stockInfoService: StockInfoService,
     private stockDataService: StockDataService,
     private messageService: MessageService) { }
@@ -62,7 +66,7 @@ export class StockListComponent implements OnInit, OnDestroy {
             );
 
           // SMA for pur
-          const newObserver2 = this.stockInfoService.getStockAnalysis('SMA', stock.symbol, 50, 'close')
+          const newObserver2 = this.stockInfoService.getStockAnalysis('SMA', stock.symbol, this.smaValue, 'close')
             .subscribe(
             (info: any) => {
               return this.updateAnalysis(stock.symbol, info, this.purchasedStockList);
@@ -70,7 +74,7 @@ export class StockListComponent implements OnInit, OnDestroy {
             );
 
           // EMA for pur
-          const newObserver3 = this.stockInfoService.getStockAnalysis('EMA', stock.symbol, 50, 'close')
+          const newObserver3 = this.stockInfoService.getStockAnalysis('EMA', stock.symbol, this.emaValue, 'close')
             .subscribe(
             (info: any) => {
               return this.updateAnalysis(stock.symbol, info, this.purchasedStockList);
@@ -99,14 +103,14 @@ export class StockListComponent implements OnInit, OnDestroy {
             );
 
           // SMA for fav
-          const newObserver2 = this.stockInfoService.getStockAnalysis('SMA', stock.symbol, 50, 'close')
+          const newObserver2 = this.stockInfoService.getStockAnalysis('SMA', stock.symbol, this.smaValue, 'close')
             .subscribe(
             (info: any) => {
               return this.updateAnalysis(stock.symbol, info, this.favoriteStockList);
             }
             );
           // EMA for fav
-          const newObserver3 = this.stockInfoService.getStockAnalysis('EMA', stock.symbol, 50, 'close')
+          const newObserver3 = this.stockInfoService.getStockAnalysis('EMA', stock.symbol, this.emaValue, 'close')
             .subscribe(
             (info: any) => {
               return this.updateAnalysis(stock.symbol, info, this.favoriteStockList);
@@ -152,14 +156,14 @@ export class StockListComponent implements OnInit, OnDestroy {
         }
         );
 
-      const newObserver2 = this.stockInfoService.getStockAnalysis('SMA', symbol, 50, 'close')
+      const newObserver2 = this.stockInfoService.getStockAnalysis('SMA', symbol, this.smaValue, 'close')
         .subscribe(
         (info: any) => {
           // console.log('subscribe SMA: ', symbol + ' ', info);
           return this.updateAnalysis(symbol, info, stockList);
         }
         );
-      const newObserver3 = this.stockInfoService.getStockAnalysis('EMA', symbol, 50, 'close')
+      const newObserver3 = this.stockInfoService.getStockAnalysis('EMA', symbol, this.emaValue, 'close')
         .subscribe(
         (info: any) => {
           // console.log('subscribe SMA: ', symbol + ' ', info);
