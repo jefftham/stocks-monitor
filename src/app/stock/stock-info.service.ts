@@ -107,7 +107,7 @@ export class StockInfoService {
         // console.log(url);
         // return this.http.get(url, { headers: headers })
         //  return this.http.get(url)
-        return Observable.timer(0, 1000 * 60 * 60).flatMap(() => this.http.get(url)
+        return Observable.timer(0, 1000 * 60 * 1).flatMap(() => this.http.get(url)
             .map(
             (res: Response) => {
                 // console.log(res);
@@ -127,7 +127,7 @@ export class StockInfoService {
                 }
 
                 // console.log(report + ' ', newData);
-                // this.messageService.inbox.next(this.messageService.send('info', 'Stock Analysis Update: ' + symbol));
+                this.messageService.inbox.next(this.messageService.send('info', 'Stock Analysis Update: ' + symbol));
                 return newData;
             }
             )

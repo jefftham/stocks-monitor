@@ -17,6 +17,7 @@ import { StockInfoService } from './stock/stock-info.service';
 import { MessageService } from './shared/message.service';
 import { FooterComponent } from './footer/footer.component';
 import { NgPipesModule } from 'ngx-pipes';
+import { SubscriptionsService } from './shared/subscriptions.service';
 
 
 
@@ -48,7 +49,7 @@ import { NgPipesModule } from 'ngx-pipes';
     MultiSelectModule,
     GrowlModule,
   ],
-  providers: [StockInfoService, StockDataService, MessageService],
+  providers: [StockInfoService, StockDataService, MessageService, SubscriptionsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
