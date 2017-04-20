@@ -111,7 +111,8 @@
     <p-footer>
       <div class="ui-helper-clearfix row" style="width:100%">
         <div class="col-md-3" style="text-align: left">
-          <input type="text" pInputText #newPurSymbol style="text-transform:uppercase" placeholder="Enter symbol" />
+          <input type="text" pInputText #newPurSymbol style="text-transform:uppercase" (keyup.enter)="onAddNewStock(newPurSymbol.value, 'purchasedStockList'); newPurSymbol.value='';"
+            placeholder="Enter symbol" />
           <button type="button" class="ui-button-success" pButton icon="fa-plus" (click)="onAddNewStock(newPurSymbol.value, 'purchasedStockList'); newPurSymbol.value='';"
             label="Add"> </button>
         </div>
@@ -189,7 +190,8 @@
     <p-footer>
       <div class="ui-helper-clearfix row" style="width:100%">
         <div class="col-md-3" style="text-align: left">
-          <input type="text" pInputText #newFavSymbol style="text-transform:uppercase" placeholder="Enter symbol" />
+          <input type="text" pInputText #newFavSymbol style="text-transform:uppercase" (keyup.enter)="onAddNewStock(newFavSymbol.value, 'favoriteStockList'); newFavSymbol.value='';"
+            placeholder="Enter symbol" />
           <button type="button" class="ui-button-success" pButton icon="fa-plus" (click)="onAddNewStock(newFavSymbol.value, 'favoriteStockList'); newFavSymbol.value='';"
             label="Add"> </button>
         </div>
