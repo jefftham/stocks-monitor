@@ -62,12 +62,8 @@ export class StockListComponent implements OnInit, OnDestroy {
         // get stock live data
         for (const stock of this.purchasedStockList) {
           // Live
-          const newObserver = this.stockInfoService.getLiveStockInfo(stock.symbol)
-            .subscribe(
-            (info: any) => {
-              return this.updateStockDetail(stock.symbol, info, this.purchasedStockList);
-            }
-            );
+          this.stockSubscribe(stock.symbol, this.purchasedStockList, 'live');
+
 
           // SMA for pur
           const smaObserver = this.stockInfoService.getStockAnalysis('SMA', stock.symbol, this.smaValue, 'close')
@@ -85,7 +81,7 @@ export class StockListComponent implements OnInit, OnDestroy {
             }
             );
           // add to subscriptions, for destroy ithe observable when change component
-          this.subService.add(newObserver, 'live');
+
           this.subService.add(smaObserver, 'sma');
           this.subService.add(emaObserver, 'ema');
         }
@@ -101,12 +97,8 @@ export class StockListComponent implements OnInit, OnDestroy {
         // this.stockDataService.saveFavoriteStockList(this.favoriteStockList);
         // get stock live data
         for (const stock of this.favoriteStockList) {
-          const newObserver = this.stockInfoService.getLiveStockInfo(stock.symbol)
-            .subscribe(
-            (info: any) => {
-              return this.updateStockDetail(stock.symbol, info, this.favoriteStockList);
-            }
-            );
+          this.stockSubscribe(stock.symbol, this.favoriteStockList, 'live');
+
 
           // SMA for fav
           const smaObserver = this.stockInfoService.getStockAnalysis('SMA', stock.symbol, this.smaValue, 'close')
@@ -123,7 +115,7 @@ export class StockListComponent implements OnInit, OnDestroy {
             }
             );
           // add to subscriptions, for destroy ithe observable when change component
-          this.subService.add(newObserver, 'live');
+
           this.subService.add(smaObserver, 'sma');
           this.subService.add(emaObserver, 'ema');
         }
@@ -220,13 +212,8 @@ export class StockListComponent implements OnInit, OnDestroy {
       this.onSavePurchase();
       this.onSaveFavorite();
 
-      const newObserver = this.stockInfoService.getLiveStockInfo(symbol)
-        .subscribe(
-        (info: any) => {
-          console.log('subscribe: ', symbol);
-          return this.updateStockDetail(symbol, info, stockList);
-        }
-        );
+      this.stockSubscribe(symbol, stockList, 'live');
+
 
       const smaObserver = this.stockInfoService.getStockAnalysis('SMA', symbol, this.smaValue, 'close')
         .subscribe(
@@ -244,7 +231,7 @@ export class StockListComponent implements OnInit, OnDestroy {
         );
 
       // add to subscriptions, for destroy ithe observable when change component
-      this.subService.add(newObserver, 'live');
+
       this.subService.add(smaObserver, 'sma');
       this.subService.add(emaObserver, 'ema');
 
@@ -254,12 +241,17 @@ export class StockListComponent implements OnInit, OnDestroy {
 
   // subscribe live stock info
   stockSubscribe(symbol: string, stockList: Stock[], subscriptionName?: string) {
+
+    // const stockListName = this.stockListToString(stockList);
+    subscriptionName = subscriptionName || 'live';
     const newObserver = this.stockInfoService.getLiveStockInfo(symbol)
       .subscribe(
       (info: any) => {
         return this.updateStockDetail(symbol, info, stockList);
-      }
-      );
+      });
+
+    this.subService.add(newObserver, subscriptionName);
+
   }
 
 
@@ -306,6 +298,22 @@ export class StockListComponent implements OnInit, OnDestroy {
       case 'favoriteStockList': return this.favoriteStockList;
       default: console.error('unknown stock list name.');
     }
+  }
+
+  stockListToString(stockList: Stock[]) {
+    let stockListName: string;
+
+    if (JSON.stringify(stockList) === JSON.stringify(this.purchasedStockList)) {
+      // purchasedStockList
+      stockListName = 'purchasedStockList';
+    } else if (JSON.stringify(stockList) === JSON.stringify(this.favoriteStockList)) {
+      // favoriteStockList
+      stockListName = 'favoriteStockList';
+    } else {
+      console.error('stockListToString : Unknown stockListName')
+    }
+
+    return stockListName;
   }
 
   // https://github.com/primefaces/primeng/issues/2535
@@ -364,7 +372,6 @@ export class StockListComponent implements OnInit, OnDestroy {
   // update the stock list from database
   updateStockDetail(symbol: string, info: object, target: Stock[]) {
     // console.log('passed symbol is ' + symbol);
-
 
     target.forEach((stock, index, thisArray) => {
       if (stock.symbol === symbol) {
