@@ -40,6 +40,8 @@ export class StockListComponent implements OnInit, OnDestroy {
   public smaValue = 50;
   public emaValue = 50;
 
+  public minValue = 5;
+  public maxValue = 5;
 
   constructor(private stockInfoService: StockInfoService,
     private stockDataService: StockDataService,
@@ -102,6 +104,7 @@ export class StockListComponent implements OnInit, OnDestroy {
 
   }
 
+
   onSmaBlur() {
     console.log('onSmaBlur');
     console.log(this.smaValue);
@@ -137,6 +140,23 @@ export class StockListComponent implements OnInit, OnDestroy {
     for (const stock of this.favoriteStockList) {
       this.analysisSubscribe(stock.symbol, this.favoriteStockList, 'EMA', this.emaValue);
     }
+  }
+
+  onMinMaxChange() {
+    console.log('onMinMaxChange');
+    console.log('min', this.minValue);
+    console.log('min', this.maxValue);
+
+    // clean the  old value
+
+    for (const stock of this.purchasedStockList) {
+      this.updateMinMax(stock);
+    }
+
+    for (const stock of this.favoriteStockList) {
+      this.updateMinMax(stock);
+    }
+
   }
 
 
@@ -224,6 +244,12 @@ export class StockListComponent implements OnInit, OnDestroy {
     this.messageService.inbox.next(this.messageService.send('success', stock.symbol + ' is moved.'));
     const stockList: Stock[] = this.stringToStockList(stockListName);
 
+    // remove the purchase price and unit when moving
+    stock['purchasedPrice'] = null;
+    stock['purchasedUnit'] = null;
+    stock['minPrice'] = null;
+    stock['maxPrice'] = null;
+
     stockList.push(stock);
     // delete the stock from current list
     const reverseStockListName = stockListName !== 'purchasedStockList' ? 'purchasedStockList' : 'favoriteStockList';
@@ -255,9 +281,15 @@ export class StockListComponent implements OnInit, OnDestroy {
   }
 
   // https://github.com/primefaces/primeng/issues/2535
-  onEditComplete() {
+  onEditComplete(event) {
     // save the stock list
-    // console.log('onEditComplete()')
+    console.log('onEditComplete()');
+    console.log(event.data);
+    event.data['purchasedPrice'] = parseFloat(event.data['purchasedPrice']);
+    event.data['purchasedUnit'] = parseFloat(event.data['purchasedUnit']);
+    event.data['minPrice'] = parseFloat(event.data['minPrice']);
+    event.data['maxPrice'] = parseFloat(event.data['maxPrice']);
+    this.updateMinMax(event.data);
     this.onSavePurchase();
     this.onSaveFavorite();
   }
@@ -336,6 +368,13 @@ export class StockListComponent implements OnInit, OnDestroy {
           stock['percentage'] = null;
         }
 
+        // calculate the min and max for alert
+        if (!stock['minPrice'] && !stock['maxPrice']) {
+          // if min and max is not saved
+          this.updateMinMax(stock);
+
+        }
+
 
         // sma - signal
         if (stock['sma'] && !isNaN(stock['sma'])) {
@@ -364,8 +403,20 @@ export class StockListComponent implements OnInit, OnDestroy {
     // console.log('updated stocks : ', target);
   }
 
+  updateMinMax(stock: Stock) {
+    if (stock['purchasedPrice']) {
+      // if  purchase price is set
+      stock['minPrice'] = parseFloat((stock['purchasedPrice'] - (stock['purchasedPrice'] * this.minValue / 100)).toFixed(2));
+      stock['maxPrice'] = parseFloat((stock['purchasedPrice'] + (stock['purchasedPrice'] * this.maxValue / 100)).toFixed(2));
+    } else {
+      stock['minPrice'] = parseFloat((stock['sma'] - (stock['sma'] * this.minValue / 100)).toFixed(2));
+      stock['maxPrice'] = parseFloat((stock['sma'] + (stock['sma'] * this.maxValue / 100)).toFixed(2));
+    }
+  }
+
 
 }
+
 
 
 

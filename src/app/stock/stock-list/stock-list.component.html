@@ -1,10 +1,11 @@
 <!--<h2>{{subtitle}}</h2>-->
 
-<!--
-  <button pButton type="button " (click)=onDebug() label="Show Detail in Console"></button>
--->
+
+<button pButton type="button " (click)=onDebug() label="Show Detail in Console"></button>
+
 <div class="row">
   <form class="form-horizontal">
+
     <div class="col-md-2">
       <div class="form-group">
         <label class="control-label col-md-6" for="sma">SMA : </label>
@@ -14,12 +15,33 @@
         </div>
       </div>
     </div>
+
     <div class="col-md-2">
       <div class="form-group">
         <label class="control-label col-md-6" for="ema">EMA : </label>
         <div class="col-md-6">
           <input class="form-control" type="number" name="ema" id="ema" #ema [(ngModel)]="emaValue" placeholder="Days" (blur)="onEmaBlur()"
             (keyup.enter)="onEmaBlur()" />
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-2">
+      <div class="form-group">
+        <label class="control-label col-md-6" for="ema">MIN : </label>
+        <div class="col-md-6">
+          <input class="form-control" type="number" name="min" id="min" #min [(ngModel)]="minValue" placeholder="5" (blur)="onMinMaxChange()"
+            (keyup.enter)="onMinMaxChange()" />
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-2">
+      <div class="form-group">
+        <label class="control-label col-md-6" for="ema">MAX : </label>
+        <div class="col-md-6">
+          <input class="form-control" type="number" name="max" id="max" #max [(ngModel)]="maxValue" placeholder="5" (blur)="onMinMaxChange()"
+            (keyup.enter)="onMinMaxChange()" />
         </div>
       </div>
     </div>
@@ -33,7 +55,7 @@
 <div>
   <p-dataTable [(value)]="purchasedStockList" [editable]="true" [rows]="15" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,15,20]"
     [responsive]="true" sortField="status" [sortOrder]="-1" resizableColumns="true" reorderableColumns="true" expandableRows="true"
-    (onEditComplete)="onEditComplete()" (onEditInit)="onEditInit()">
+    (onEditComplete)="onEditComplete($event)" (onEditInit)="onEditInit()">
     <!--Header section-->
     <p-header>
       <h3>Purchased Stocks</h3>
@@ -67,14 +89,17 @@
         </ng-template>
         <!--customized body-->
         <ng-template pTemplate let-col let-row="rowData">
-          <input *ngIf="col.field == 'purchasedPrice' || col.field == 'purchasedUnit'; else colOther " type="number" pInputText [(ngModel)]="row[col.field]"
-          />
-          <ng-template #colOther>
-            <span *ngIf="col.field == 'status' || col.field == 'sSignal' || col.field == 'eSignal'  || col.field == 'percentage' ; else colProfit "
-              [ngStyle]="{'color': row[col.field] > 0 ? 'green': 'red'}">{{row[col.field]}}<span *ngIf="row[col.field]"> %</span></span>
-            <ng-template #colProfit>
-              <span *ngIf="col.field == 'profit' ; else normal" [ngStyle]="{'color': row[col.field] > 0 ? 'green': 'red'}">{{row[col.field]}}</span>
-              <ng-template #normal><span>{{row[col.field]}} </span> </ng-template>
+          <p-inputSwitch *ngIf="col.field == 'alert'; else noAlert" [(ngModel)]="row[col.field]"></p-inputSwitch>
+          <ng-template #noAlert>
+            <input *ngIf="col.field == 'purchasedPrice' || col.field == 'purchasedUnit'|| col.field == 'minPrice'|| col.field == 'maxPrice'; else colOther "
+              type="number" [(ngModel)]="row[col.field]" />
+            <ng-template #colOther>
+              <span *ngIf="col.field == 'status' || col.field == 'sSignal' || col.field == 'eSignal'  || col.field == 'percentage' ; else colProfit "
+                [ngStyle]="{'color': row[col.field] > 0 ? 'green': 'red'}">{{row[col.field]}}<span *ngIf="row[col.field]"> %</span></span>
+              <ng-template #colProfit>
+                <span *ngIf="col.field == 'profit' ; else normal" [ngStyle]="{'color': row[col.field] > 0 ? 'green': 'red'}">{{row[col.field]}}</span>
+                <ng-template #normal><span>{{row[col.field]}} </span> </ng-template>
+              </ng-template>
             </ng-template>
           </ng-template>
         </ng-template>
@@ -160,7 +185,8 @@
         </ng-template>
         <!--customized body-->
         <ng-template pTemplate let-col let-row="rowData">
-          <input *ngIf="false; else colOther " type="number" pInputText [(ngModel)]="row[col.field]" />
+          <p-inputSwitch *ngIf="col.field == 'alert'; else colOther" [(ngModel)]="row[col.field]"></p-inputSwitch>
+          <!--<input *ngIf="false; else colOther " type="number" pInputText [(ngModel)]="row[col.field]" />-->
           <ng-template #colOther>
             <span *ngIf="col.field == 'status' || col.field == 'sSignal' || col.field == 'eSignal' ; else normal " [ngStyle]="{'color': row[col.field] > 0 ? 'green': 'red'}">{{row[col.field]}}<span *ngIf="row[col.field]"> %</span></span>
             <ng-template #normal><span>{{row[col.field]}}</span></ng-template>

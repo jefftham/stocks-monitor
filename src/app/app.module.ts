@@ -12,7 +12,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { SuggestStocksComponent } from './stock/suggest-stocks/suggest-stocks.component';
 import { StockStartComponent } from './stock/stock-start/stock-start.component';
 import { StockDataService } from './stock/stock-data.service';
-import { InputTextModule, DataTableModule, ButtonModule, DialogModule, MultiSelectModule, GrowlModule } from 'primeng/primeng';
+import { InputTextModule, DataTableModule, ButtonModule, DialogModule, MultiSelectModule, GrowlModule, InputSwitchModule } from 'primeng/primeng';
 import { StockInfoService } from './stock/stock-info.service';
 import { MessageService } from './shared/message.service';
 import { FooterComponent } from './footer/footer.component';
@@ -48,6 +48,7 @@ import { SubscriptionsService } from './shared/subscriptions.service';
     DialogModule,
     MultiSelectModule,
     GrowlModule,
+    InputSwitchModule
   ],
   providers: [StockInfoService, StockDataService, MessageService, SubscriptionsService],
   bootstrap: [AppComponent]

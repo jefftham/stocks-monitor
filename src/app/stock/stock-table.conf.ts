@@ -16,6 +16,7 @@ export class StockTableConf {
         { field: 'sSignal', header: 'S Signal %', sortable: true, },
         { field: 'ema', header: 'EMA', sortable: true },
         { field: 'eSignal', header: 'E Signal %', sortable: true, },
+
         // { field: 'avg', header: 'Avg', sortable: true, 'editable': true, styleClass: 'editable-field' },
         // { field: 'signal', header: 'Signal %', sortable: true, 'editable': false },
     ];
@@ -26,11 +27,16 @@ export class StockTableConf {
         { field: 'purchasedUnit', header: 'Unit', sortable: true, 'editable': true, styleClass: 'editable-field' },
         { field: 'profit', header: 'Gain/Loss', sortable: true, 'editable': false },
         { field: 'percentage', header: 'Gain/Loss %', sortable: true, 'editable': false },
-
+        { field: 'minPrice', header: 'Min', sortable: true, 'editable': true, styleClass: 'editable-field' },
+        { field: 'maxPrice', header: 'Max', sortable: true, 'editable': true, styleClass: 'editable-field' },
+        { field: 'alert', header: 'Alert', },
     ];
 
     static favCols: any[] = [
         ...StockTableConf.commCols,
+        { field: 'minPrice', header: 'Min', sortable: true, 'editable': true, styleClass: 'editable-field' },
+        { field: 'maxPrice', header: 'Max', sortable: true, 'editable': true, styleClass: 'editable-field' },
+        { field: 'alert', header: 'Alert', },
         // { field: 'data.other', header: 'other' },
 
     ];
