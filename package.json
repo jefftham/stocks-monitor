@@ -34,8 +34,6 @@
     "core-js": "^2.4.1",
     "express": "^4.15.2",
     "font-awesome": "^4.7.0",
-    "hubot": "^2.19.0",
-    "hubot-heroku-keepalive": "^1.0.2",
     "ngx-pipes": "^1.5.8",
     "primeng": "^2.0.6",
     "rxjs": "^5.1.0",
