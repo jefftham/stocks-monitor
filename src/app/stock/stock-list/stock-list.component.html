@@ -69,7 +69,7 @@
     <div class="ui-g col-md-12">
       <!-- First column of the table - list all the actions -->
       <p-column [style]="{'width':'100px', 'text-align':'center'}" expander="true" styleClass="col-icon" header="Actions">
-        <ng-template let-stock="rowData" pTemplate type="body">
+        <ng-template let-stock="rowData" pTemplate="body">
           <button type="button" pButton icon="fa-times" class="ui-button-danger" (click)="onDeleteStock(stock, 'purchasedStockList')"></button>
           <button type="button" pButton icon="fa-arrow-down" (click)="onMoveStockTo(stock, 'favoriteStockList')"></button>
         </ng-template>
@@ -78,7 +78,7 @@
       <p-column *ngFor="let col of commCols" [field]="col.field" [header]="col.header" [sortable]="col.sortable" [editable]="col.editable"
         [styleClass]="col.styleClass">
         <!--customized header-->
-        <ng-template let-col let-row="rowData" pTemplate type="header">
+        <ng-template let-col let-row="rowData" pTemplate="header">
           <span *ngIf="col.header == 'SMA'; else emaHeader">{{col.header}}-{{smaValue}}</span>
           <ng-template #emaHeader>
             <span *ngIf="col.header == 'EMA'; else otherHeader">{{col.header}}-{{emaValue}}</span>
@@ -201,7 +201,7 @@
     <div class="ui-g-12 col-md-12">
       <!-- First column of the table - list all the actions -->
       <p-column [style]="{'width':'100px', 'text-align':'center'}" expander="true" styleClass="col-icon" header="Actions">
-        <ng-template let-stock="rowData" pTemplate type="body">
+        <ng-template let-stock="rowData" pTemplate="body">
           <button type="button" pButton icon="fa-times" class="ui-button-danger" (click)="onDeleteStock(stock, 'favoriteStockList')"></button>
           <button type="button" pButton icon="fa-arrow-up" (click)="onMoveStockTo(stock, 'purchasedStockList')"></button>
         </ng-template>
@@ -211,7 +211,7 @@
       <p-column *ngFor="let col of commCols" [field]="col.field" [header]="col.header" [sortable]="col.sortable" [editable]="col.editable"
         [styleClass]="col.styleClass">
         <!--customized header-->
-        <ng-template let-col let-row="rowData" pTemplate type="header">
+        <ng-template let-col let-row="rowData" pTemplate="header">
           <span *ngIf="col.header == 'SMA'; else emaHeader">{{col.header}}-{{smaValue}}</span>
           <ng-template #emaHeader>
             <span *ngIf="col.header == 'EMA'; else otherHeader">{{col.header}}-{{emaValue}}</span>
