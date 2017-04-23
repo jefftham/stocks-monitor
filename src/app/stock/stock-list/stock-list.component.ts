@@ -282,6 +282,8 @@ export class StockListComponent implements OnInit, OnDestroy {
     stock['minPrice'] = null;
     stock['maxPrice'] = null;
 
+    this.updateMinMax(stock);
+
     stockList.push(stock);
     // delete the stock from current list
     const reverseStockListName = stockListName !== 'purchasedStockList' ? 'purchasedStockList' : 'favoriteStockList';
@@ -322,6 +324,7 @@ export class StockListComponent implements OnInit, OnDestroy {
       event.data['purchasedUnit'] = parseFloat(event.data['purchasedUnit']);
       event.data['minPrice'] = parseFloat(event.data['minPrice']);
       event.data['maxPrice'] = parseFloat(event.data['maxPrice']);
+      // console.log("event.data['minPrice']  = ", event.data['minPrice'])
       this.updateMinMax(event.data);
     }
 
@@ -411,7 +414,7 @@ export class StockListComponent implements OnInit, OnDestroy {
         }
 
         // calculate the min and max for alert
-        if (!stock['minPrice'] && !stock['maxPrice']) {
+        if (!stock['minPrice'] || !stock['maxPrice']) {
           // if min and max is not saved
           this.updateMinMax(stock);
 
@@ -457,15 +460,36 @@ export class StockListComponent implements OnInit, OnDestroy {
   }
 
   updateMinMax(stock: Stock) {
+    // existing minPrice and maxPrice
+    const preMinPrice = stock['minPrice'];
+    const preMaxPrice = stock['maxPrice'];
+
+    const minPriceSma = parseFloat((stock['sma'] - (stock['sma'] * this.minValue / 100)).toFixed(2));
+    const maxPriceSma = parseFloat((stock['sma'] + (stock['sma'] * this.maxValue / 100)).toFixed(2));
+
+    stock['minPrice'] = minPriceSma;
+    stock['maxPrice'] = maxPriceSma;
+
     if (stock['purchasedPrice']) {
-      // if  purchase price is set
       stock['minPrice'] = parseFloat((stock['purchasedPrice'] - (stock['purchasedPrice'] * this.minValue / 100)).toFixed(2));
       stock['maxPrice'] = parseFloat((stock['purchasedPrice'] + (stock['purchasedPrice'] * this.maxValue / 100)).toFixed(2));
-    } else {
-      stock['minPrice'] = parseFloat((stock['sma'] - (stock['sma'] * this.minValue / 100)).toFixed(2));
-      stock['maxPrice'] = parseFloat((stock['sma'] + (stock['sma'] * this.maxValue / 100)).toFixed(2));
     }
+
+    if (!preMinPrice || !preMaxPrice) {
+      //  undefined
+      return;
+    } else {
+
+      if (preMinPrice !== minPriceSma && preMinPrice !== stock['minPrice']) {
+        stock['minPrice'] = preMinPrice;
+      }
+      if (preMaxPrice !== maxPriceSma && preMaxPrice !== stock['maxPrice']) {
+        stock['maxPrice'] = preMaxPrice;
+      }
+    }
+
   }
+
 
 
 }
@@ -476,3 +500,6 @@ export class StockListComponent implements OnInit, OnDestroy {
 // TODO
 // improvement:  deleted stock is not removed from subscriptions
 // improvement:  stock added in fav list can be added to pur list and move to fav later.
+
+// LIMITATION
+// minPrice and maxPrice: it only take the initial purchase price. if the purchase price changed, the minPrice and maxPrice will not populate.
