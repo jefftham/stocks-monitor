@@ -39,11 +39,12 @@ export class StockListComponent implements OnInit, OnDestroy {
   favCols: any[] = StockTableConf['favCols'];
   // purColsOptions: SelectItem[] = [];
 
-  public smaValue = 50;
-  public emaValue = 50;
-
-  public minValue = 5;
-  public maxValue = 5;
+  // config
+  public config = {}
+  public smaValue = 0;
+  public emaValue = 0;
+  public minValue = 0;
+  public maxValue = 0;
 
   constructor(private stockInfoService: StockInfoService,
     private stockDataService: StockDataService,
@@ -56,6 +57,18 @@ export class StockListComponent implements OnInit, OnDestroy {
 
     // this.messageService.inbox.next(this.messageService.send('info', 'Info Message', 'PrimeNG rocks 1'));
     // this.messageService.inbox.next(this.messageService.send('info', 'Info Message', 'PrimeNG rocks 2'));
+
+    // get config
+    this.stockDataService.getConfig().subscribe(
+      (data) => {
+        this.config = data;
+        this.smaValue = data['sma'];
+        this.emaValue = data['ema'];
+        this.minValue = data['min'];
+        this.maxValue = data['max'];
+      },
+      (error: Response) => console.log(error)
+    );
 
     // get purchase stock list from db
     this.stockDataService.getPurchasedStockList().subscribe(
@@ -93,7 +106,7 @@ export class StockListComponent implements OnInit, OnDestroy {
           this.analysisSubscribe(stock.symbol, this.favoriteStockList, 'SMA', this.smaValue);
 
           // EMA for fav
-          this.analysisSubscribe(stock.symbol, this.favoriteStockList, 'eMA', this.emaValue);
+          this.analysisSubscribe(stock.symbol, this.favoriteStockList, 'EMA', this.emaValue);
         }
       },
       (error: Response) => console.log(error)
@@ -108,8 +121,12 @@ export class StockListComponent implements OnInit, OnDestroy {
 
 
   onSmaBlur() {
-    console.log('onSmaBlur');
-    console.log(this.smaValue);
+    // console.log('onSmaBlur');
+    // console.log(this.smaValue);
+
+    // update config
+    this.config['sma'] = this.smaValue;
+    this.stockDataService.saveConfig(this.config);
 
     // unsbuscribe
     this.subService.clean('sma');
@@ -127,8 +144,12 @@ export class StockListComponent implements OnInit, OnDestroy {
   }
 
   onEmaBlur() {
-    console.log('onEmaBlur');
-    console.log(this.emaValue);
+    // console.log('onEmaBlur');
+    // console.log(this.emaValue);
+
+    // update config
+    this.config['ema'] = this.emaValue;
+    this.stockDataService.saveConfig(this.config);
 
     // unsbuscribe
     this.subService.clean('ema');
@@ -145,11 +166,14 @@ export class StockListComponent implements OnInit, OnDestroy {
   }
 
   onMinMaxChange() {
-    console.log('onMinMaxChange');
-    console.log('min', this.minValue);
-    console.log('max', this.maxValue);
+    // console.log('onMinMaxChange');
+    // console.log('min', this.minValue);
+    // console.log('max', this.maxValue);
 
-    // clean the  old value
+    // update config
+    this.config['min'] = this.minValue;
+    this.config['max'] = this.maxValue;
+    this.stockDataService.saveConfig(this.config);
 
     for (const stock of this.purchasedStockList) {
       this.updateMinMax(stock);

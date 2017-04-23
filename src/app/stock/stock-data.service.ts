@@ -10,6 +10,7 @@ import { MessageService } from '../shared/message.service';
 export class StockDataService {
     private purchasedDB = 'https://stocks-dd1e5.firebaseio.com/purchase.json';
     private favoriteDB = 'https://stocks-dd1e5.firebaseio.com/favorite.json';
+    private configDB = 'https://stocks-dd1e5.firebaseio.com/config.json';
 
     constructor(private http: Http, private messageService: MessageService) { }
 
@@ -40,6 +41,18 @@ export class StockDataService {
             );
     }
 
+
+    saveConfig(config: object) {
+        return this.http.put(this.configDB, config)
+            .subscribe(
+            (res: Response) => console.log('Saved config'),
+            (error: Response) => {
+                console.log(error);
+                console.log('config that going to save : ', config);
+            }
+            );
+    }
+
     getPurchasedStockList() {
         return this.http.get(this.purchasedDB)
             .map(
@@ -51,6 +64,15 @@ export class StockDataService {
 
     getFavoriteStockList() {
         return this.http.get(this.favoriteDB)
+            .map(
+            (res: Response) => {
+                return res.json();
+            }
+            );
+    }
+
+    getConfig() {
+        return this.http.get(this.configDB)
             .map(
             (res: Response) => {
                 return res.json();
