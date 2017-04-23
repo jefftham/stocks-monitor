@@ -118,7 +118,7 @@
 
       <p-column field="percentage" header="Gain/Loss %" sortable="true" styleClass="">
         <ng-template pTemplate let-col let-row="rowData">
-          <span [ngStyle]="{'color': row[col.field] >= 0 ? 'green': 'red'}">{{row[col.field]}}<span> %</span></span>
+          <span [ngStyle]="{'color': row[col.field] >= 0 ? 'green': 'red'}">{{row[col.field]}}<span *ngIf="row[col.field]"> %</span></span>
         </ng-template>
       </p-column>
 

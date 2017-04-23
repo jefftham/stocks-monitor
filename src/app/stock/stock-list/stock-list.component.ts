@@ -45,6 +45,9 @@ export class StockListComponent implements OnInit, OnDestroy {
   public emaValue = 0;
   public minValue = 0;
   public maxValue = 0;
+  public newSmaEma = false;
+  public count = 0;
+
 
   constructor(private stockInfoService: StockInfoService,
     private stockDataService: StockDataService,
@@ -124,6 +127,7 @@ export class StockListComponent implements OnInit, OnDestroy {
     // console.log('onSmaBlur');
     // console.log(this.smaValue);
 
+    this.newSmaEma = true;
     // update config
     this.config['sma'] = this.smaValue;
     this.stockDataService.saveConfig(this.config);
@@ -139,6 +143,7 @@ export class StockListComponent implements OnInit, OnDestroy {
     // subscribe new analysis with new period
     for (const stock of this.favoriteStockList) {
       this.analysisSubscribe(stock.symbol, this.favoriteStockList, 'SMA', this.smaValue);
+
     }
 
   }
@@ -147,6 +152,7 @@ export class StockListComponent implements OnInit, OnDestroy {
     // console.log('onEmaBlur');
     // console.log(this.emaValue);
 
+    this.newSmaEma = true;
     // update config
     this.config['ema'] = this.emaValue;
     this.stockDataService.saveConfig(this.config);
@@ -355,6 +361,12 @@ export class StockListComponent implements OnInit, OnDestroy {
     this.stockDataService.saveFavoriteStockList(this.favoriteStockList);
   }
 
+  onSaveAll() {
+    console.log('onSaveAll()');
+    this.onSavePurchase();
+    this.onSaveFavorite();
+  }
+
   ngOnDestroy() {
     console.log('unsubscribe all Observables in stock-list component');
     //  this.ngUnsubscribe.complete();
@@ -422,6 +434,17 @@ export class StockListComponent implements OnInit, OnDestroy {
           stock['eSignal'] = parseFloat(percentage.toFixed(2));
         } else {
           stock['eSignal'] = null;
+        }
+
+        // update min max based on this.newSmaEma
+        if (this.newSmaEma) {
+          this.count++;
+          this.updateMinMax(stock);
+        }
+
+        if (this.count === this.purchasedStockList.length + this.favoriteStockList.length) {
+          this.count = 0;
+          this.newSmaEma = false;
         }
 
       }
