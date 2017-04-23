@@ -74,8 +74,8 @@
           <button type="button" pButton icon="fa-arrow-down" (click)="onMoveStockTo(stock, 'favoriteStockList')"></button>
         </ng-template>
       </p-column>
-      <!-- Dynamically  list the columns based on the array of  purCols -->
-      <p-column *ngFor="let col of purCols" [field]="col.field" [header]="col.header" [sortable]="col.sortable" [editable]="col.editable"
+      <!-- Dynamically  list the columns based on the array of  commCols -->
+      <p-column *ngFor="let col of commCols" [field]="col.field" [header]="col.header" [sortable]="col.sortable" [editable]="col.editable"
         [styleClass]="col.styleClass">
         <!--customized header-->
         <ng-template let-col let-row="rowData" pTemplate type="header">
@@ -87,27 +87,64 @@
             </ng-template>
           </ng-template>
         </ng-template>
-        <!--customized body-->
+        <!--commCols fields-->
         <ng-template pTemplate let-col let-row="rowData">
-          <p-inputSwitch *ngIf="col.field == 'alert'; else noAlert" [(ngModel)]="row[col.field]"></p-inputSwitch>
-          <ng-template #noAlert>
-            <input *ngIf="col.field == 'purchasedPrice' || col.field == 'purchasedUnit'|| col.field == 'minPrice'|| col.field == 'maxPrice'; else colOther "
-              type="number" [(ngModel)]="row[col.field]" />
-            <ng-template #colOther>
-              <span *ngIf="col.field == 'status' || col.field == 'sSignal' || col.field == 'eSignal'  || col.field == 'percentage' ; else colProfit "
-                [ngStyle]="{'color': row[col.field] > 0 ? 'green': 'red'}">{{row[col.field]}}<span *ngIf="row[col.field]"> %</span></span>
-              <ng-template #colProfit>
-                <span *ngIf="col.field == 'profit' ; else normal" [ngStyle]="{'color': row[col.field] > 0 ? 'green': 'red'}">{{row[col.field]}}</span>
-                <ng-template #normal><span>{{row[col.field]}} </span> </ng-template>
-              </ng-template>
-            </ng-template>
+          <span *ngIf="col.field == 'status' || col.field == 'sSignal' || col.field == 'eSignal'  || col.field == 'percentage' ; else colProfit "
+            [ngStyle]="{'color': row[col.field] >= 0 ? 'green': 'red'}">{{row[col.field]}}<span *ngIf="row[col.field]"> %</span></span>
+          <ng-template #colProfit>
+            <span *ngIf="col.field == 'profit' ; else normal" [ngStyle]="{'color': row[col.field] >= 0 ? 'green': 'red'}">{{row[col.field]}}</span>
+            <ng-template #normal><span>{{row[col.field]}} </span> </ng-template>
           </ng-template>
         </ng-template>
       </p-column>
+      <!-- Columns based on the array of  purCols -->
+      <p-column field="purchasedPrice" header="Purchased" sortable="true" editable="true" styleClass="editable-field">
+        <ng-template pTemplate let-col let-row="rowData">
+          <input type="number" [(ngModel)]="row[col.field]" />
+        </ng-template>
+      </p-column>
+
+      <p-column field="purchasedUnit" header="Unit" sortable="true" editable="true" styleClass="editable-field">
+        <ng-template pTemplate let-col let-row="rowData">
+          <input type="number" [(ngModel)]="row[col.field]" />
+        </ng-template>
+      </p-column>
+
+      <p-column field="profit" header="Gain/Loss" sortable="true" styleClass="">
+        <ng-template pTemplate let-col let-row="rowData">
+          <span [ngStyle]="{'color': row[col.field] >= 0 ? 'green': 'red'}">{{row[col.field]}}</span>
+        </ng-template>
+      </p-column>
+
+      <p-column field="percentage" header="Gain/Loss %" sortable="true" styleClass="">
+        <ng-template pTemplate let-col let-row="rowData">
+          <span [ngStyle]="{'color': row[col.field] >= 0 ? 'green': 'red'}">{{row[col.field]}}<span> %</span></span>
+        </ng-template>
+      </p-column>
+
+      <p-column field="minPrice" header="Min" sortable="true" editable="true" styleClass="editable-field">
+        <ng-template pTemplate let-col let-row="rowData">
+          <input type="number" [(ngModel)]="row[col.field]" />
+        </ng-template>
+      </p-column>
+
+      <p-column field="maxPrice" header="Max" sortable="true" editable="true" styleClass="editable-field">
+        <ng-template pTemplate let-col let-row="rowData">
+          <input type="number" [(ngModel)]="row[col.field]" />
+        </ng-template>
+      </p-column>
+
+      <p-column field="alert" header="Alert" sortable="true" styleClass="">
+        <ng-template pTemplate let-col let-row="rowData">
+          <p-inputSwitch [(ngModel)]="row[col.field]" (onChange)="onEditComplete($event)"></p-inputSwitch>
+        </ng-template>
+      </p-column>
+
+
       <!--
       <p-column field="profit" header="test" sortable="true" editable="true">
         <ng-template pTemplate let-col let-row="rowData">
-          <span [ngStyle]="{'color': row[col.field] > 0 ? 'green': 'red'}">{{row[col.field]}}</span>
+          <span [ngStyle]="{'color': row[col.field] >= 0 ? 'green': 'red'}">{{row[col.field]}}</span>
         </ng-template>
       </p-column>
       -->
@@ -171,7 +208,7 @@
       </p-column>
       <!-- Dynamically  list the columns based on the array of  favCols -->
       <!--<p-column *ngFor="let col of favCols " [field]="col.field " [header]="col.header " [sortable]="true" [editable]="col.editable"></p-column>-->
-      <p-column *ngFor="let col of favCols" [field]="col.field" [header]="col.header" [sortable]="col.sortable" [editable]="col.editable"
+      <p-column *ngFor="let col of commCols" [field]="col.field" [header]="col.header" [sortable]="col.sortable" [editable]="col.editable"
         [styleClass]="col.styleClass">
         <!--customized header-->
         <ng-template let-col let-row="rowData" pTemplate type="header">
@@ -185,14 +222,29 @@
         </ng-template>
         <!--customized body-->
         <ng-template pTemplate let-col let-row="rowData">
-          <p-inputSwitch *ngIf="col.field == 'alert'; else colOther" [(ngModel)]="row[col.field]"></p-inputSwitch>
-          <!--<input *ngIf="false; else colOther " type="number" pInputText [(ngModel)]="row[col.field]" />-->
-          <ng-template #colOther>
-            <span *ngIf="col.field == 'status' || col.field == 'sSignal' || col.field == 'eSignal' ; else normal " [ngStyle]="{'color': row[col.field] > 0 ? 'green': 'red'}">{{row[col.field]}}<span *ngIf="row[col.field]"> %</span></span>
-            <ng-template #normal><span>{{row[col.field]}}</span></ng-template>
-          </ng-template>
+          <span *ngIf="col.field == 'status' || col.field == 'sSignal' || col.field == 'eSignal' ; else normal " [ngStyle]="{'color': row[col.field] >= 0 ? 'green': 'red'}">{{row[col.field]}}<span *ngIf="row[col.field]"> %</span></span>
+          <ng-template #normal><span>{{row[col.field]}}</span></ng-template>
         </ng-template>
       </p-column>
+
+      <p-column field="minPrice" header="Min" sortable="true" editable="true" styleClass="editable-field">
+        <ng-template pTemplate let-col let-row="rowData">
+          <input type="number" [(ngModel)]="row[col.field]" />
+        </ng-template>
+      </p-column>
+
+      <p-column field="maxPrice" header="Max" sortable="true" editable="true" styleClass="editable-field">
+        <ng-template pTemplate let-col let-row="rowData">
+          <input type="number" [(ngModel)]="row[col.field]" />
+        </ng-template>
+      </p-column>
+
+      <p-column field="alert" header="Alert" sortable="true" styleClass="">
+        <ng-template pTemplate let-col let-row="rowData">
+          <p-inputSwitch [(ngModel)]="row[col.field]" (onChange)="onEditComplete($event)"></p-inputSwitch>
+        </ng-template>
+      </p-column>
+
     </div>
     <!-- The row expansion of each row-->
     <ng-template let-stock pTemplate="rowexpansion">

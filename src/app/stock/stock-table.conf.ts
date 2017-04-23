@@ -21,6 +21,7 @@ export class StockTableConf {
         // { field: 'signal', header: 'Signal %', sortable: true, 'editable': false },
     ];
 
+    //  purCols is not used in current version
     static purCols: any[] = [
         ...StockTableConf.commCols,
         { field: 'purchasedPrice', header: 'Purchased', sortable: true, 'editable': true, styleClass: 'editable-field' },
@@ -32,6 +33,7 @@ export class StockTableConf {
         { field: 'alert', header: 'Alert', },
     ];
 
+    //  favCols is not used in current version
     static favCols: any[] = [
         ...StockTableConf.commCols,
         { field: 'minPrice', header: 'Min', sortable: true, 'editable': true, styleClass: 'editable-field' },

@@ -25,6 +25,7 @@ export class StockListComponent implements OnInit, OnDestroy {
   purchasedStockList: Stock[] = [];
   favoriteStockList: Stock[] = [];
   selectedStock: Stock;
+  saveInterval;
 
   // private ngUnsubscribe: Subject<void> = new Subject<void>();
   //  private subscriptions: Array<Subscription> = [];
@@ -33,6 +34,7 @@ export class StockListComponent implements OnInit, OnDestroy {
 
   // the configuration for PrimeNg table
   // columns
+  commCols: any[] = StockTableConf['commCols'];
   purCols: any[] = StockTableConf['purCols'];
   favCols: any[] = StockTableConf['favCols'];
   // purColsOptions: SelectItem[] = [];
@@ -145,7 +147,7 @@ export class StockListComponent implements OnInit, OnDestroy {
   onMinMaxChange() {
     console.log('onMinMaxChange');
     console.log('min', this.minValue);
-    console.log('min', this.maxValue);
+    console.log('max', this.maxValue);
 
     // clean the  old value
 
@@ -283,13 +285,16 @@ export class StockListComponent implements OnInit, OnDestroy {
   // https://github.com/primefaces/primeng/issues/2535
   onEditComplete(event) {
     // save the stock list
-    console.log('onEditComplete()');
-    console.log(event.data);
-    event.data['purchasedPrice'] = parseFloat(event.data['purchasedPrice']);
-    event.data['purchasedUnit'] = parseFloat(event.data['purchasedUnit']);
-    event.data['minPrice'] = parseFloat(event.data['minPrice']);
-    event.data['maxPrice'] = parseFloat(event.data['maxPrice']);
-    this.updateMinMax(event.data);
+    // console.log('onEditComplete()');
+    if (event.data) {
+      // console.log(event.data);
+      event.data['purchasedPrice'] = parseFloat(event.data['purchasedPrice']);
+      event.data['purchasedUnit'] = parseFloat(event.data['purchasedUnit']);
+      event.data['minPrice'] = parseFloat(event.data['minPrice']);
+      event.data['maxPrice'] = parseFloat(event.data['maxPrice']);
+      this.updateMinMax(event.data);
+    }
+
     this.onSavePurchase();
     this.onSaveFavorite();
   }
@@ -297,13 +302,14 @@ export class StockListComponent implements OnInit, OnDestroy {
   onEditInit() {
     // Since onEditComplete Event only trigger when user hit  Enter on keyboard,
     // this function will  set a timer to set the data.
+    clearInterval(this.saveInterval);
 
     let runCount = 0;
 
-    const timerId = setInterval(
+    this.saveInterval = setInterval(
       () => {
         runCount++;
-        if (runCount > 3) { clearInterval(timerId); }
+        if (runCount > 3) { clearInterval(this.saveInterval); }
 
         // console.log('onEdit saving');
         this.onSavePurchase();
