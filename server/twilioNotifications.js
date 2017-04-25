@@ -15,14 +15,28 @@ exports.notifyOnError = function (appError, request, response, next) {
   next(appError);
 };
 
-function formatMessagePrice(stock) {
+function formatMessagePriceDrop(stock) {
   return 'ALERT! ' + stock['symbol'] +
-    ' price changed attention!! It is ' + stock['close'] + ' now ';
+    ' is dropping to ' + stock['close'] + ' now ';
 }
 
-exports.notifyOnPrice = function (stock) {
+
+exports.notifyOnPriceDrop = function (stock) {
   admins.forEach(function (admin) {
-    var messageToSend = formatMessagePrice(stock);
+    var messageToSend = formatMessagePriceDrop(stock);
+    twilioClient.sendSms(admin.phoneNumber, messageToSend);
+  });
+  console.log('message sent: ' + stock['symbol'] + ' ' + stock['close']);
+};
+
+function formatMessagePriceRise(stock) {
+  return 'ALERT! ' + stock['symbol'] +
+    ' is rising to ' + stock['close'] + ' now ';
+}
+
+exports.notifyOnPriceRise = function (stock) {
+  admins.forEach(function (admin) {
+    var messageToSend = formatMessagePriceRise(stock);
     twilioClient.sendSms(admin.phoneNumber, messageToSend);
   });
   console.log('message sent: ' + stock['symbol'] + ' ' + stock['close']);

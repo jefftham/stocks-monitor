@@ -3,15 +3,6 @@ const request = require('request');
 // Map routes to controller functions
 module.exports = function (router) {
 
-  // For all GET requests, send back index.html
-  // so that PathLocationStrategy can be used
-  router.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname + './../dist/index.html'));
-  });
-
-  router.get('/stock', function (req, res) {
-    res.sendFile(path.join(__dirname + './../dist/index.html'));
-  });
 
   // get the stock api
   router.get('/api/:query', function (req, res) {
@@ -40,5 +31,13 @@ module.exports = function (router) {
   router.get('/error', function (req, resp) {
     throw new Error('Derp. An error occurred.');
   });
+
+  // For all GET requests, send back index.html
+  // so that PathLocationStrategy can be used
+  router.get('*', function (req, res) {
+    res.sendFile(path.join(__dirname + './../dist/index.html'));
+  });
+
+
 
 };
