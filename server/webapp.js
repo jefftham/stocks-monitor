@@ -58,7 +58,7 @@ app.use(function (req, res, next) {
 
 // Configure application routes
 var routes = require('./router');
-var router = express.Router();
+
 
 // Add CSRF protection for web routes
 if (process.env.NODE_ENV !== 'test') {
@@ -69,13 +69,18 @@ if (process.env.NODE_ENV !== 'test') {
   });
 }
 
-routes(router);
-app.use(router);
+app.use(routes);
 
 // Handle 404
 // app.use(function (request, response, next) {
 //   response.status(404);
-//   response.sendFile(path.join(__dirname, 'public', '404.html'));
+//   response.sendFile(path.join(__dirname, './../dist/index.html'));
+// });
+
+// 404 catch
+// app.all('*', (req, res) => {
+//   console.log(`[TRACE] Server 404 request: ${req.originalUrl}`);
+//   res.status(200).sendFile(path.join(__dirname, './../dist/index.html'));
 // });
 
 // Mount middleware to notify Twilio of errors

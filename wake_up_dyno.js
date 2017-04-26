@@ -3,7 +3,7 @@ var http = require('http'); //importing http
 var options = {
   host: 'jeff-stocks-monitor.herokuapp.com',
   port: 80,
-  path: '/stock'
+  path: '/'
 };
 console.log("======Dyno is Waking Up======");
 http.get(options, function (res) {

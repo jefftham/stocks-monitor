@@ -136,24 +136,24 @@ function Checker() {
   function listener() {
     //  console.log("self execution function is running...")
     stockAlert.on('addStock', (stock) => {
-      console.log(++self.count + ' time on listener  ');
-      console.log('stockAlert on addStock: ', stock.symbol);
+      console.log(++self.count + ' times on listener  ');
+      // console.log('stockAlert on addStock: ', stock.symbol);
       // get price based on alertList
 
       getPrice(stock)
         .then(data => {
-          console.log('getPrice : ' + stock.symbol + '  : ' + JSON.stringify(data));
+          // console.log('getPrice : ' + stock.symbol + '  : ' + JSON.stringify(data));
 
           // build latest stock price into stock object
           for (const key of Object.keys(data)) {
             stock[key] = data[key];
           }
 
-          console.log('latest stock detail: ', JSON.stringify(stock));
+          // console.log('latest stock detail: ', JSON.stringify(stock));
 
           // minPrice  drop alert
           if (stock.close <= stock.minPrice) {
-            console.log('price drop alert: ' + stock.symbol + ' droping to ' + stock.close);
+            console.log('price DROP alert: ' + stock.symbol + ' has dropped at ' + stock.close);
 
             if (self.stockSent.indexOf(stock.symbol) === -1) {
               // did not send sms today
@@ -172,7 +172,7 @@ function Checker() {
 
           // minPrice  rise alert
           if (stock.close >= stock.maxPrice) {
-            console.log('price rise alert: ' + stock.symbol + ' rising to ' + stock.close);
+            console.log('price RISE alert: ' + stock.symbol + ' has risen at ' + stock.close);
 
 
             if (self.stockSent.indexOf(stock.symbol) === -1) {
