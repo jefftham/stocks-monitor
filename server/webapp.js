@@ -33,7 +33,7 @@ app.use(bodyParser.urlencoded({
 // Create and manage HTTP sessions for all requests
 app.use(session({
   secret: config.secret,
-  resave: true,
+  resave: false,
   saveUninitialized: true
 }));
 
