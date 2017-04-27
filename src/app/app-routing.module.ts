@@ -18,12 +18,14 @@ const appRoutes: Routes = [
     },
     { path: 'suggest', component: SuggestStocksComponent },
 
+    { path: '**', redirectTo: '/stock' },  // 404 redirect to /'stock'
+
 
 
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(appRoutes)],
+    imports: [RouterModule.forRoot(appRoutes, { useHash: true })],
     exports: [RouterModule]
 })
 export class AppRoutingModule {
