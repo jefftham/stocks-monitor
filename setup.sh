@@ -14,6 +14,9 @@ sudo apt-get install build-essential -y
 
 popd
 
+# install npm dependencies
+npm install
+
 # make the nodejs server script executable
 chmod +x ./server.js
 chmod +x ./start_node.sh
