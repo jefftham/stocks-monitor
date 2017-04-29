@@ -1,3 +1,5 @@
+#!/usr/bin/env nodejs
+
 var http = require('http');
 var config = require('./server/config');
 
