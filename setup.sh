@@ -23,5 +23,9 @@ sudo npm install -g pm2
 
 # start service
 pm2 start start_node.sh
+pm2 start server.js
 
-sudo pm2 startup systemd
+pm2 startup systemd
+
+#  you need to change this. based on the  result of  pm2 startup systemd
+sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u jeff_tham --hp /home/jeff_tham
