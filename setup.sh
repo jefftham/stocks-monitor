@@ -19,16 +19,19 @@ npm install
 
 # make the nodejs server script executable
 chmod +x ./server.js
-chmod +x ./start_node.sh
+
+# route 80 to 8080 and 443 to 8443
+bash iptables.sh
 
 # install PM2
 sudo npm install -g pm2
 
 # start service
-pm2 start start_node.sh
 pm2 start server.js
 
 pm2 startup systemd
 
 #  you need to change this. based on the  result of  pm2 startup systemd
 sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u jeff_tham --hp /home/jeff_tham
+
+pm2 save
