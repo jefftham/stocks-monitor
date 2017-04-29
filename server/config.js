@@ -16,7 +16,7 @@ if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
 // console.log('path: ' + path.join(__dirname, './../.env'));
 
 // HTTP Port to run our web application
-cfg.port = process.env.PORT || 4200;
+cfg.port = process.env.PORT || 8080;
 
 // A random string that will help generate secure one-time passwords and
 // HTTP sessions
