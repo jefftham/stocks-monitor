@@ -43,8 +43,8 @@ Thumbs.db
 
 
 # Logs
-logs
-*.log
+# logs
+# *.log
 npm-debug.log*
 
 # Runtime data

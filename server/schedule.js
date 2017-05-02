@@ -18,7 +18,7 @@ const smsAlert = require('./smsAlert');
 
 //const schdule_wakeup = '1 55 15 * * 1-5';
 
-const schdule_wakeup = '1 32 9 * * 1-5'; //every weekday at 9:32.01  am
+const schdule_wakeup = '1 40 9 * * 1-5'; //every weekday at 9:40.01  am
 const schdule_sleep = '1 02,15,25 16 * * 1-5'; //every weekday at 4:02.01, 4:15.01, 4:25.01  pm
 
 let interval;

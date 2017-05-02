@@ -27,7 +27,7 @@ bash iptables.sh
 sudo npm install -g pm2
 
 # start service
-pm2 start server.js
+pm2 start server.js -o="./logs/output.log" -e="./logs/error.log"
 
 pm2 startup systemd
 
