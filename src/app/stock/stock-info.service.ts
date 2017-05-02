@@ -63,7 +63,13 @@ export class StockInfoService {
         // console.log(url);
         // return this.http.get(url, { headers: headers })
         //  return this.http.get(url)
-        return Observable.timer(0, 1000 * 60).flatMap(() => this.http.get(url)
+
+        // private function for interval: try to avoid update all the price at the same time
+        function randomIntFromInterval(min, max) {
+            return Math.floor(Math.random() * (max - min + 1) + min);
+        }
+
+        return Observable.timer(0, 1000 * randomIntFromInterval(60, 70)).flatMap(() => this.http.get(url)
             .map(
             (res: Response) => {
                 // console.log(res);
