@@ -6,11 +6,12 @@ import 'rxjs/Rx';
 import { Stock } from './stock.model';
 import { StockDataService } from './stock-data.service';
 import { MessageService } from '../shared/message.service';
+import { environment } from '../../environments/environment.prod';
 
 // const api = 'https://www.alphavantage.co/query?function=';
 const api = '/api/';
 
-const apiKey = 1537;
+const apiKey = environment.apiKey;
 // const headers = new Headers({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
 
 const stockEnum = {

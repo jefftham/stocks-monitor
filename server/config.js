@@ -2,7 +2,8 @@ var path = require('path');
 var dotenv = require('dotenv');
 var cfg = {};
 
-if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
+// did not specific whether the server is production or test ot development
+if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test' && process.env.NODE_ENV !== 'development') {
   dotenv.config({
     path: path.join(__dirname, './../.env')
   });

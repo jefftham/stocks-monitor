@@ -3,14 +3,15 @@ import { Http, Response } from '@angular/http';
 import { Stock } from './stock.model';
 import 'rxjs/Rx';
 import { MessageService } from '../shared/message.service';
+import { environment } from '../../environments/environment.prod';
 
 
 // using Google Firebase to save  stock list
 @Injectable()
 export class StockDataService {
-    private purchasedDB = 'https://stocks-dd1e5.firebaseio.com/purchase.json';
-    private favoriteDB = 'https://stocks-dd1e5.firebaseio.com/favorite.json';
-    private configDB = 'https://stocks-dd1e5.firebaseio.com/config.json';
+    private purchasedDB = environment.purchasedDB;
+    private favoriteDB = environment.favoriteDB;
+    private configDB = environment.configDB;
 
     constructor(private http: Http, private messageService: MessageService) { }
 
