@@ -42,6 +42,7 @@
     "express-session": "^1.15.2",
     "font-awesome": "^4.7.0",
     "jquery": "^3.2.1",
+    "later": "^1.2.0",
     "morgan": "^1.8.1",
     "ngx-pipes": "^1.5.8",
     "primeng": "^2.0.6",

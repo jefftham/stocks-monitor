@@ -8,7 +8,8 @@ var csurf = require('csurf');
 
 var config = require('./config');
 var twilioNotifications = require('./twilioNotifications');
-var schedule = require('./schedule')();
+//var schedule = require('./schedule')();
+var later = require('./later')();
 
 // Create Express web app
 var app = express();
