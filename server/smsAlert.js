@@ -37,13 +37,17 @@ function getStockData(db) {
       // console.log('error:', error); // Print the error if one occurred
       //  console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
       // console.log('body:', body); // Print the HTML for the Google homepage.
-      data = JSON.parse(body);
 
-      if (Object.keys(data).length) {
-        resolve(data);
-      } else {
-        reject('No data in the Database.');
+      if (!error && response.statusCode == 200) {
+        data = JSON.parse(body);
+
+        if (Object.keys(data).length) {
+          resolve(data);
+        } else {
+          reject('No data in the Database.');
+        }
       }
+
     });
   });
 }
@@ -53,25 +57,27 @@ function getPrice(stock) {
   // console.log("Stock URL: ", stockUrl);
   return new Promise((resolve, reject) => {
     request(stockUrl,
-      (error, res, body) => {
+      (error, response, body) => {
         // console.log(res.statusCode) // 200
         if (error) {
           reject(error);
         }
 
-        let data = JSON.parse(body);
-        // parse data, just return the latest stock price
-        // console.log('latest data of ' + symbol + ' : ', Object.keys(data['Time Series (Daily)'])[0]);
-        data = data['Time Series (Daily)'][Object.keys(data['Time Series (Daily)'])[0]];
+        if (!error && response.statusCode == 200) {
+          let data = JSON.parse(body);
+          // parse data, just return the latest stock price
+          // console.log('latest data of ' + symbol + ' : ', Object.keys(data['Time Series (Daily)'])[0]);
+          data = data['Time Series (Daily)'][Object.keys(data['Time Series (Daily)'])[0]];
 
-        // change the data key with stockEnum
-        const newData = {};
-        // tslint:disable-next-line:forin
-        for (const key in data) {
-          newData[stockEnum[key]] = parseFloat(parseFloat(data[key]).toFixed(2));
+          // change the data key with stockEnum
+          const newData = {};
+          // tslint:disable-next-line:forin
+          for (const key in data) {
+            newData[stockEnum[key]] = parseFloat(parseFloat(data[key]).toFixed(2));
+          }
+          //  console.log(newData);
+          resolve(newData);
         }
-        //  console.log(newData);
-        resolve(newData);
       });
   });
 }
