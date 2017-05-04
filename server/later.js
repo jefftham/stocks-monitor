@@ -2,7 +2,7 @@
   later.date.localTime();
   const smsAlert = require('./smsAlert');
 
-  const schdule_wakeup = later.parse.recur().every(1).minute().after('09:40').time().before('16:01').time().onWeekday();
+  const schdule_wakeup = later.parse.recur().every(1).minute().after('09:31').time().before('16:01').time().onWeekday();
   const schdule_sleep = later.parse.recur().on('16:02').time().onWeekday();
 
 
