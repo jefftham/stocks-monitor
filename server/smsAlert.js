@@ -3,6 +3,7 @@ const twilio = require('./twilioNotifications');
 const EventEmitter = require('events');
 class StockEventEmitter extends EventEmitter {}
 const stockAlert = new StockEventEmitter();
+const config = require('./config');
 
 
 // console.log('process.env.TWILIO_SENT_SMS  ', process.env.TWILIO_SENT_SMS);
@@ -16,8 +17,8 @@ function getStockUrl(symbol) {
 }
 
 
-const purchaseDB = 'https://stocks-dd1e5.firebaseio.com/purchase.json';
-const favoriteDB = 'https://stocks-dd1e5.firebaseio.com/favorite.json';
+const purchaseDB = config.purchasedDB || 'https://stocks-dd1e5.firebaseio.com/purchase.json';
+const favoriteDB = config.favoriteDB || 'https://stocks-dd1e5.firebaseio.com/favorite.json';
 
 const stockEnum = {
   '1. open': 'open',
@@ -124,7 +125,7 @@ function Checker() {
       })
       .catch(err => console.log(err));
 
-  } //run
+  }; //run
 
 
   this.reset = function () {
@@ -133,16 +134,17 @@ function Checker() {
     this.purchasedStockList = [];
     this.favoriteStockList = [];
 
-    console.log('reseting... ')
+    console.log('reseting... ');
     console.log('After: length of stockSent = ' + self.stockSent.length);
 
-  }
+  };
 
   // self execution function as listener
   function listener() {
     //  console.log("self execution function is running...")
     stockAlert.on('addStock', (stock) => {
-      console.log(++self.count + ' times on listener  ');
+      ++self.count;
+      console.log(new Date().toLocaleString() + '  listener called ' + self.count);
       // console.log('stockAlert on addStock: ', stock.symbol);
       // get price based on alertList
 
@@ -159,32 +161,32 @@ function Checker() {
 
           // minPrice  drop alert
           if (stock.close <= stock.minPrice) {
-            console.log('price DROP alert: ' + stock.symbol + ' has dropped at ' + stock.close);
+            console.log(new Date().toLocaleString() + 'price DROP alert: ' + stock.symbol + ' has dropped at ' + stock.close);
 
             if (self.stockSent.indexOf(stock.symbol) === -1) {
               // did not send sms today
               self.stockSent.push(stock.symbol);
-              console.log('Sending sms now for ' + stock.symbol);
+              console.log(new Date().toLocaleString() + 'Sending sms now for ' + stock.symbol);
 
               if (sendSMS) {
                 twilio.notifyOnPriceDrop(stock);
               }
 
             } else {
-              console.log('Already sent sms today for ' + stock.symbol);
+              console.log(new Date().toLocaleString() + 'Already sent sms today for ' + stock.symbol);
             }
 
           }
 
           // minPrice  rise alert
           if (stock.close >= stock.maxPrice) {
-            console.log('price RISE alert: ' + stock.symbol + ' has risen at ' + stock.close);
+            console.log(new Date().toLocaleString() + 'price RISE alert: ' + stock.symbol + ' has risen at ' + stock.close);
 
 
             if (self.stockSent.indexOf(stock.symbol) === -1) {
               // did not send sms today
               self.stockSent.push(stock.symbol);
-              console.log('Sending sms now for ' + stock.symbol);
+              console.log(new Date().toLocaleString() + 'Sending sms now for ' + stock.symbol);
 
               if (sendSMS) {
                 twilio.notifyOnPriceRise(stock);
@@ -192,7 +194,7 @@ function Checker() {
 
 
             } else {
-              console.log('Already sent sms today for ' + stock.symbol);
+              console.log(new Date().toLocaleString() + 'Already sent sms today for ' + stock.symbol);
             }
 
           }
@@ -201,7 +203,7 @@ function Checker() {
         });
 
 
-    })
+    });
     // anonymous end
   }
   listener();
@@ -209,7 +211,7 @@ function Checker() {
 } // Checker end
 
 
-var checkerInstance = new Checker()
+var checkerInstance = new Checker();
 
 module.exports = {
 

@@ -33,6 +33,9 @@ cfg.accountSid = process.env.TWILIO_ACCOUNT_SID;
 cfg.authToken = process.env.TWILIO_AUTH_TOKEN;
 cfg.sendingNumber = process.env.TWILIO_NUMBER;
 
+cfg.purchasedDB = process.env.purchasedDB;
+cfg.favoriteDB = process.env.favoriteDB;
+
 var requiredConfig = [cfg.accountSid, cfg.authToken, cfg.sendingNumber];
 var isConfigured = requiredConfig.every(function (configValue) {
   return configValue || false;
