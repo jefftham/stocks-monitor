@@ -10,7 +10,7 @@
   const schdule_check_up = later.parse.recur().every(1).minute().after(time_up).time().before(time_down).time().onWeekday();
   const schdule_check_down = later.parse.recur().on(time_down).time().onWeekday();
 
-  const schdule_wake_up = later.parse.recur().every(28).minute().after(time_up).time().before(time_down).time().onWeekday();
+  const schdule_wake_up = later.parse.recur().every(15).minute().after(time_up).time().before(time_down).time().onWeekday();
 
   module.exports = function () {
 
