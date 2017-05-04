@@ -1,28 +1,57 @@
   const later = require('later');
   later.date.localTime();
   const smsAlert = require('./smsAlert');
+  const http = require('http'); //importing http
 
-  const schdule_wakeup = later.parse.recur().every(1).minute().after('09:31').time().before('16:01').time().onWeekday();
-  const schdule_sleep = later.parse.recur().on('16:02').time().onWeekday();
+  const time_up = '09:31';
+  const time_down = '16:01';
 
+
+  const schdule_check_up = later.parse.recur().every(1).minute().after(time_up).time().before(time_down).time().onWeekday();
+  const schdule_check_down = later.parse.recur().on(time_down).time().onWeekday();
+
+  const schdule_wake_up = later.parse.recur().every(28).minute().after(time_up).time().before(time_down).time().onWeekday();
 
   module.exports = function () {
 
     console.log('smsAlert.checker.count: ' + smsAlert.checker.count);
 
-    const wakeup = later.setInterval(
+    const check_up = later.setInterval(
       () => {
         // tasks
         console.log("Schedule job started. checking price now. ");
         smsAlert.checker.run();
-      }, schdule_wakeup);
+      }, schdule_check_up);
 
 
-    const sleep = later.setInterval(
+    const check_down = later.setInterval(
       () => {
         // tasks
         console.log("Reset the smsAlert now ");
         smsAlert.checker.reset();
-      }, schdule_sleep);
+      }, schdule_check_down);
+
+    const wake_up = later.setInterval(
+      () => {
+        // tasks
+        console.log("======Dyno is Waking Up======");
+        http.get({
+          hostname: 'localhost',
+          port: process.env.PORT || 8080,
+          path: '/',
+          agent: false
+        }, function (res) {
+          res.on('data', function (chunk) {
+            try {
+              // optional logging... disable after it's working
+              console.log("======SERVER RESPONSE: " + chunk);
+            } catch (err) {
+              console.log(err.message);
+            }
+          });
+        }).on('error', function (err) {
+          console.log("Error: " + err.message);
+        });
+      }, schdule_wake_up);
 
   };
