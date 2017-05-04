@@ -3,7 +3,7 @@ var fs = require('fs');
 var admins = require('./administrators.json');
 
 function formatMessage(errorToReport) {
-  return new Date().toLocaleString() + 'ALERT! It appears the server is' +
+  return new Date().toLocaleString() + ' ALERT! It appears the server is' +
     'having issues. Exception: ' + errorToReport;
 }
 
@@ -16,7 +16,7 @@ exports.notifyOnError = function (appError, request, response, next) {
 };
 
 function formatMessagePriceDrop(stock) {
-  return new Date().toLocaleString() + 'ALERT! ' + stock['symbol'] +
+  return new Date().toLocaleString() + ' ALERT! ' + stock['symbol'] +
     ' is dropping to ' + stock['close'] + ' now ';
 }
 
@@ -26,11 +26,11 @@ exports.notifyOnPriceDrop = function (stock) {
     var messageToSend = formatMessagePriceDrop(stock);
     twilioClient.sendSms(admin.phoneNumber, messageToSend);
   });
-  console.log(new Date().toLocaleString() + 'message sent: ' + stock['symbol'] + ' ' + stock['close']);
+  console.log(new Date().toLocaleString() + ' message sent: ' + stock['symbol'] + ' ' + stock['close']);
 };
 
 function formatMessagePriceRise(stock) {
-  return new Date().toLocaleString() + 'ALERT! ' + stock['symbol'] +
+  return new Date().toLocaleString() + ' ALERT! ' + stock['symbol'] +
     ' is rising to ' + stock['close'] + ' now ';
 }
 
@@ -39,5 +39,5 @@ exports.notifyOnPriceRise = function (stock) {
     var messageToSend = formatMessagePriceRise(stock);
     twilioClient.sendSms(admin.phoneNumber, messageToSend);
   });
-  console.log(new Date().toLocaleString() + 'message sent: ' + stock['symbol'] + ' ' + stock['close']);
+  console.log(new Date().toLocaleString() + ' message sent: ' + stock['symbol'] + ' ' + stock['close']);
 };

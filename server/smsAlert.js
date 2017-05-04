@@ -68,16 +68,18 @@ function getPrice(stock) {
           let data = JSON.parse(body);
           // parse data, just return the latest stock price
           // console.log('latest data of ' + symbol + ' : ', Object.keys(data['Time Series (Daily)'])[0]);
-          data = data['Time Series (Daily)'][Object.keys(data['Time Series (Daily)'])[0]];
+          if (data) {
+            data = data['Time Series (Daily)'][Object.keys(data['Time Series (Daily)'])[0]];
 
-          // change the data key with stockEnum
-          const newData = {};
-          // tslint:disable-next-line:forin
-          for (const key in data) {
-            newData[stockEnum[key]] = parseFloat(parseFloat(data[key]).toFixed(2));
+            // change the data key with stockEnum
+            const newData = {};
+            // tslint:disable-next-line:forin
+            for (const key in data) {
+              newData[stockEnum[key]] = parseFloat(parseFloat(data[key]).toFixed(2));
+            }
+            //  console.log(newData);
+            resolve(newData);
           }
-          //  console.log(newData);
-          resolve(newData);
         }
       });
   });
@@ -161,32 +163,32 @@ function Checker() {
 
           // minPrice  drop alert
           if (stock.close <= stock.minPrice) {
-            console.log(new Date().toLocaleString() + 'price DROP alert: ' + stock.symbol + ' has dropped at ' + stock.close);
+            console.log(new Date().toLocaleString() + ' price DROP alert: ' + stock.symbol + ' has dropped at ' + stock.close);
 
             if (self.stockSent.indexOf(stock.symbol) === -1) {
               // did not send sms today
               self.stockSent.push(stock.symbol);
-              console.log(new Date().toLocaleString() + 'Sending sms now for ' + stock.symbol);
+              console.log(new Date().toLocaleString() + ' Sending sms now for ' + stock.symbol);
 
               if (sendSMS) {
                 twilio.notifyOnPriceDrop(stock);
               }
 
             } else {
-              console.log(new Date().toLocaleString() + 'Already sent sms today for ' + stock.symbol);
+              console.log(new Date().toLocaleString() + ' Already sent sms today for ' + stock.symbol);
             }
 
           }
 
           // minPrice  rise alert
           if (stock.close >= stock.maxPrice) {
-            console.log(new Date().toLocaleString() + 'price RISE alert: ' + stock.symbol + ' has risen at ' + stock.close);
+            console.log(new Date().toLocaleString() + ' price RISE alert: ' + stock.symbol + ' has risen at ' + stock.close);
 
 
             if (self.stockSent.indexOf(stock.symbol) === -1) {
               // did not send sms today
               self.stockSent.push(stock.symbol);
-              console.log(new Date().toLocaleString() + 'Sending sms now for ' + stock.symbol);
+              console.log(new Date().toLocaleString() + ' Sending sms now for ' + stock.symbol);
 
               if (sendSMS) {
                 twilio.notifyOnPriceRise(stock);

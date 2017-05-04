@@ -9,10 +9,10 @@ module.exports.sendSms = function (to, message) {
     //  mediaUrl: imageUrl
   }, function (err, data) {
     if (err) {
-      console.error(new Date().toLocaleString() + 'Could not notify administrator');
+      console.error(new Date().toLocaleString() + ' Could not notify administrator');
       console.error(err);
     } else {
-      console.log(new Date().toLocaleString() + 'Administrator notified');
+      console.log(new Date().toLocaleString() + ' Administrator notified');
     }
   });
 };
