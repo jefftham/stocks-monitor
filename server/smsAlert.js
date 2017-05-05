@@ -68,7 +68,7 @@ function getPrice(stock) {
           let data = JSON.parse(body);
           // parse data, just return the latest stock price
           // console.log('latest data of ' + symbol + ' : ', Object.keys(data['Time Series (Daily)'])[0]);
-          if (data && Object.keys(data['Time Series (Daily)']) && data['Time Series (Daily)'][Object.keys(data['Time Series (Daily)'])[0]]) {
+          if (data && data['Time Series (Daily)'] && data['Time Series (Daily)'][Object.keys(data['Time Series (Daily)'])[0]]) {
             data = data['Time Series (Daily)'][Object.keys(data['Time Series (Daily)'])[0]];
 
             // change the data key with stockEnum
