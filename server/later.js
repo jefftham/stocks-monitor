@@ -39,7 +39,9 @@
           hostname: 'https://jeff-stocks-monitor.herokuapp.com',
           port: 443,
           path: '/',
-          agent: true
+          agent: new http.Agent({
+            keepAlive: true
+          })
         }, function (res) {
           res.on('data', function (chunk) {
             try {
