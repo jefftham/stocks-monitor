@@ -196,7 +196,7 @@ function Checker() {
 
 
             } else {
-              console.log(new Date().toLocaleString() + 'Already sent sms today for ' + stock.symbol);
+              console.log(new Date().toLocaleString() + ' Already sent sms today for ' + stock.symbol);
             }
 
           }

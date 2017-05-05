@@ -36,7 +36,7 @@
         // tasks
         console.log("======Dyno is Waking Up======");
         http.get({
-          hostname: 'https://jeff-stocks-monitor.herokuapp.com',
+          hostname: 'jeff-stocks-monitor.herokuapp.com',
           port: 443,
           path: '/',
           agent: new http.Agent({
