@@ -36,8 +36,8 @@
         // tasks
         console.log("======Dyno is Waking Up======");
         http.get({
-          hostname: 'localhost',
-          port: process.env.PORT || 8080,
+          hostname: 'https://jeff-stocks-monitor.herokuapp.com',
+          //  port: process.env.PORT || 8080,
           path: '/',
           agent: false
         }, function (res) {
