@@ -1,7 +1,7 @@
   const later = require('later');
   later.date.localTime();
   const smsAlert = require('./smsAlert');
-  const http = require('http'); //importing http
+  const https = require('https'); //importing http
 
   const time_up = '09:31';
   const time_down = '16:01';
@@ -35,11 +35,11 @@
       () => {
         // tasks
         console.log("======Dyno is Waking Up======");
-        http.get({
+        https.get({
           hostname: 'jeff-stocks-monitor.herokuapp.com',
           port: 443,
           path: '/',
-          agent: new http.Agent({
+          agent: new https.Agent({
             keepAlive: true
           })
         }, function (res) {
