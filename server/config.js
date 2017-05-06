@@ -36,6 +36,8 @@ cfg.sendingNumber = process.env.TWILIO_NUMBER;
 cfg.purchasedDB = process.env.purchasedDB;
 cfg.favoriteDB = process.env.favoriteDB;
 
+cfg.HEROKU_HOST = process.env.HEROKU_HOST;
+
 var requiredConfig = [cfg.accountSid, cfg.authToken, cfg.sendingNumber];
 var isConfigured = requiredConfig.every(function (configValue) {
   return configValue || false;
