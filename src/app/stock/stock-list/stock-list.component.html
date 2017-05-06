@@ -100,13 +100,13 @@
       <!-- Columns based on the array of  purCols -->
       <p-column field="purchasedPrice" header="Purchased" sortable="true" editable="true" styleClass="editable-field">
         <ng-template pTemplate let-col let-row="rowData">
-          <input type="number" [(ngModel)]="row[col.field]" />
+          <input type="number" [(ngModel)]="row[col.field]" (click)="row[col.field]=''" />
         </ng-template>
       </p-column>
 
       <p-column field="purchasedUnit" header="Unit" sortable="true" editable="true" styleClass="editable-field">
         <ng-template pTemplate let-col let-row="rowData">
-          <input type="number" [(ngModel)]="row[col.field]" />
+          <input type="number" [(ngModel)]="row[col.field]" (click)="row[col.field]=''" />
         </ng-template>
       </p-column>
 
@@ -124,13 +124,13 @@
 
       <p-column field="minPrice" header="Min" sortable="true" editable="true" styleClass="editable-field">
         <ng-template pTemplate let-col let-row="rowData">
-          <input type="number" [(ngModel)]="row[col.field]" />
+          <input type="number" [(ngModel)]="row[col.field]" (click)="row[col.field]=''" />
         </ng-template>
       </p-column>
 
       <p-column field="maxPrice" header="Max" sortable="true" editable="true" styleClass="editable-field">
         <ng-template pTemplate let-col let-row="rowData">
-          <input type="number" [(ngModel)]="row[col.field]" />
+          <input type="number" [(ngModel)]="row[col.field]" (click)="row[col.field]=''" />
         </ng-template>
       </p-column>
 
@@ -229,13 +229,13 @@
 
       <p-column field="minPrice" header="Min" sortable="true" editable="true" styleClass="editable-field">
         <ng-template pTemplate let-col let-row="rowData">
-          <input type="number" [(ngModel)]="row[col.field]" />
+          <input type="number" [(ngModel)]="row[col.field]" (click)="row[col.field]=''" />
         </ng-template>
       </p-column>
 
       <p-column field="maxPrice" header="Max" sortable="true" editable="true" styleClass="editable-field">
         <ng-template pTemplate let-col let-row="rowData">
-          <input type="number" [(ngModel)]="row[col.field]" />
+          <input type="number" [(ngModel)]="row[col.field]" (click)="row[col.field]=''" />
         </ng-template>
       </p-column>
 

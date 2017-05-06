@@ -498,7 +498,6 @@ export class StockListComponent implements OnInit, OnDestroy {
 
 
 // TODO
-// improvement:  deleted stock is not removed from subscriptions
 // improvement:  stock added in fav list can be added to pur list and move to fav later.
 
 // LIMITATION
