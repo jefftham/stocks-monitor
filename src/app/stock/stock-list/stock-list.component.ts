@@ -112,7 +112,7 @@ export class StockListComponent implements OnInit, OnDestroy {
           this.analysisSubscribe(stock.symbol, this.favoriteStockList, 'EMA', this.emaValue);
         }
       },
-      (error: Response) => console.log(error);
+      (error: Response) => console.log(error)
     );
 
     /*    // for DataTable : allow user select witch column to display
