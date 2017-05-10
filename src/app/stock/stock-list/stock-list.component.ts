@@ -65,10 +65,10 @@ export class StockListComponent implements OnInit, OnDestroy {
     this.stockDataService.getConfig().subscribe(
       (data) => {
         this.config = data;
-        this.smaValue = data['sma'];
-        this.emaValue = data['ema'];
-        this.minValue = data['min'];
-        this.maxValue = data['max'];
+        this.smaValue = data['sma'] || 50;
+        this.emaValue = data['ema'] || 50;
+        this.minValue = data['min'] || 5;
+        this.maxValue = data['max'] || 5;
       },
       (error: Response) => console.log(error)
     );
@@ -112,7 +112,7 @@ export class StockListComponent implements OnInit, OnDestroy {
           this.analysisSubscribe(stock.symbol, this.favoriteStockList, 'EMA', this.emaValue);
         }
       },
-      (error: Response) => console.log(error)
+      (error: Response) => console.log(error);
     );
 
     /*    // for DataTable : allow user select witch column to display
@@ -414,10 +414,9 @@ export class StockListComponent implements OnInit, OnDestroy {
         }
 
         // calculate the min and max for alert
-        if (!stock['minPrice'] || !stock['maxPrice']) {
+        if (!(stock['minPrice'] && stock['maxPrice'])) {
           // if min and max is not saved
           this.updateMinMax(stock);
-
         }
 
 
