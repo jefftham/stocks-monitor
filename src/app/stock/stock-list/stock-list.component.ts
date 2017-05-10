@@ -76,7 +76,7 @@ export class StockListComponent implements OnInit, OnDestroy {
     // get purchase stock list from db
     this.stockDataService.getPurchasedStockList().subscribe(
       (data: any[]) => {
-        this.purchasedStockList = data;
+        this.purchasedStockList = data || [];
         // console.log('purchased stocks: ', this.purchasedStockList);
         // this.stockDataService.savePurchasedStockList(this.purchasedStockList);
         // get stock live data
@@ -98,7 +98,7 @@ export class StockListComponent implements OnInit, OnDestroy {
     // get favorite  stock list from db
     this.stockDataService.getFavoriteStockList().subscribe(
       (data: any[]) => {
-        this.favoriteStockList = data;
+        this.favoriteStockList = data || [];
         // console.log('favarite stocks: ', this.favoriteStockList);
         // this.stockDataService.saveFavoriteStockList(this.favoriteStockList);
         // get stock live data

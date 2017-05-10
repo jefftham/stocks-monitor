@@ -42,7 +42,7 @@ function getStockData(db) {
       if (!error && response.statusCode == 200) {
         data = JSON.parse(body);
 
-        if (Object.keys(data).length) {
+        if (data) {
           resolve(data);
         } else {
           reject('No data in the Database.');
