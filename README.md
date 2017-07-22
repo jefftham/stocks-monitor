@@ -1,30 +1,59 @@
 # stocks-monitor
-A self-learning project that using angular 4 as a front-end to monitor the stocks trading info
 
-# Instructions
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0.
+A self-learning project that using [Angular 4](https://angular.io/) as a front-end to monitor the stocks trading info. [Nodejs](https://nodejs.org/en/) is used to build HTTPS back-end server. [Firebase](https://firebase.google.com/) as database server.
 
-## Development server
+[Production Server - a private repo](https://stocks.yeadev.com)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+[this demo](https://jeff-stocks-monitor.herokuapp.com/)
 
-## Code scaffolding
+## Stocks API
+[Alpha Vantage](https://www.alphavantage.co/)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive/pipe/service/class/module`.
+## Front-End ([Angular 4](https://angular.io/) + [PrimeNG](http://primefaces.org/primeng/))
+
+Contain several main component. header, footer, authenticaton, stock-list.component & growth-movement.component.
+
+### stock-list.component
+
+Contain user's purchased stocks, favorite stocks, and user config & preferences.
+
+### growth-movement.component
+
+Contain most of the stocks in the market and its analyzed performance.
+
+### authentication
+
+stock-list.component is protected by authGuard. Only authenticated user can access its only list in firebase.
+
+## Back-End ( [Nodejs](https://nodejs.org/en/) + [Firebase](https://firebase.google.com/))
+Several schedulers will run every weekdays during the stock market trading hours to check the users' stocks position and send SMS and/or EMAIL to users in accordingly.
+
+A scheduler will run every mid-night, it analyzes most of the stocks in the market and update it to the database, so growth-movement.component always display the latest analysis.
+
+# Installation in Linux
+
+`sudo apt-get install -y git`
+
+`cd stocks-monitor`
+
+`bash setup.sh`
+
+## Installation  in windows
+
+`npm install`
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+`npm run build`
 
-## Running unit tests
+## Start
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+`npm run start`
 
-## Running end-to-end tests
+## Development in windows
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
+`npm run proxy`
 
-## Further help
+## Debug in windows
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+`npm run wdebug`
