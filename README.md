@@ -1,10 +1,28 @@
 # stocks-monitor
 
-A self-learning project that using [Angular 4](https://angular.io/) as a front-end to monitor the stocks trading info. [Nodejs](https://nodejs.org/en/) is used to build HTTPS back-end server. [Firebase](https://firebase.google.com/) as database server.
+A self-learning project that using [Angular 4](https://angular.io/) as a front-end to monitor the stocks trading info. [Nodejs](https://nodejs.org/en/) is used to build HTTPS back-end server. [Firebase](https://firebase.google.com/) as database server. This project included  front-end UI to allow users to add their own stocks and monitor the stocks performance, and the back-end will send out nortificatons throught Email and/or SMS (Text Message) to alert users about their stocks movement. In addition, several analysises will be running daily to reveal performance and movement of stocks in the market.
 
 [Production Server - a private repo](https://stocks.yeadev.com)
 
 [this demo](https://jeff-stocks-monitor.herokuapp.com/)
+
+## Features
+- [x] Authenticate by Google firebase SDK.
+- [x] Allow users login with Facebook, Google or Email account.
+- [x] Each user contains his own list of stocks.
+- [x] Front-end UI produced by Angular 4 that allow users control their own stock list and settings.
+- [x] Data transmit throught HTTPS protocol.
+- [x] The info of the stocks keep update every minute.
+- [x] Auto calculate Profit and Loss for purchased stocks.
+- [x] Auto set min price and max price for each stock.
+- [x] Auto calculate [SMA](http://www.investopedia.com/terms/s/sma.asp) & [EMA](http://www.investopedia.com/terms/e/ema.asp) and use these as a signal for stock investment.
+- [x] A scheduler run every minute (during the market trading period) to check the latest stock price and send out notification.
+- [x] A daily stocks summary send out at the morning to notify users for the stock last closing price and its performance.
+- [x] Notification can be sent throught Email and/or Text message.
+- [x] Mobile UI supported.
+- [x] A daily scheduler to analyze most of the stocks in the market and disclose their one year performance and movement.
+- [ ] Display US Sector Performance (realtime & historical)
+
 
 ## Stocks API
 [Alpha Vantage](https://www.alphavantage.co/)
