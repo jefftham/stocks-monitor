@@ -21,7 +21,7 @@ A self-learning project that using [Angular 4](https://angular.io/) as a front-e
 - [x] Notification can be sent throught Email and/or Text message.
 - [x] Mobile UI supported.
 - [x] A daily scheduler to analyze most of the stocks in the market and disclose their one year performance and movement.
-- [ ] Display US Sector Performance (realtime & historical)
+- [x] Display US Sector Performance (realtime & historical)
 
 
 ## Stocks API
